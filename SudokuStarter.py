@@ -1,4 +1,4 @@
-# Nathan Shelly (njs199) and Alexander (Sasha) Weiss (awq325)
+#  Nathan Shelly (njs199) and Alexander (Sasha) Weiss (awq325)
 # All group members were present and contributing during all work on this project
 
 #!/usr/bin/env python
@@ -10,7 +10,7 @@ class SudokuBoard:
     def __init__(self, size, board):
       """the constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
-      self.CurrentGameBoard= board #the current state of the game board
+      self.CurrentGameBoard = board #the current state of the game board
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
