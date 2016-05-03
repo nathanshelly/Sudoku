@@ -1,3 +1,6 @@
+# Nathan Shelly (njs199) and Alexander (Sasha) Weiss (awq325)
+# All group members were present and contributing during all work on this project
+
 #!/usr/bin/env python
 import struct, string, math
 
@@ -17,7 +20,7 @@ class SudokuBoard:
         self.CurrentGameBoard[row][col]=value
         #return a new board of the same size with the value added
         return SudokuBoard(self.BoardSize, self.CurrentGameBoard)
-                                                  
+
     def print_board(self):
         """Prints the current game board. Leaves unassigned spots blank."""
         div = int(math.sqrt(self.BoardSize))
