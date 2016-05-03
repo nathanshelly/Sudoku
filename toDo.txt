@@ -1,0 +1,13 @@
+GIVEN A SPOT
+    Get the domain for that spot in its:
+        row
+        column
+        diagonal
+        subsquare
+
+Backtrack dumbly
+    Pick random variables to assign first
+    Pick random values to check first
+
+Heuristics
+    Be smarter
