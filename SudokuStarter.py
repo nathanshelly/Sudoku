@@ -3,7 +3,7 @@ import struct, string, math
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
-  
+
     def __init__(self, size, board):
       """the constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
@@ -13,12 +13,11 @@ class SudokuBoard:
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
 
-        #add the value to the appropriate position on the board
+        # add the value to the appropriate position on the board
         self.CurrentGameBoard[row][col]=value
         #return a new board of the same size with the value added
         return SudokuBoard(self.BoardSize, self.CurrentGameBoard)
-                                                                  
-                                                                  
+                                                  
     def print_board(self):
         """Prints the current game board. Leaves unassigned spots blank."""
         div = int(math.sqrt(self.BoardSize))
@@ -74,9 +73,9 @@ def parse_file(filename):
         col = int(chars[1])
         val = int(chars[2])
         board[row-1][col-1]=val
-    
+
     return board
-    
+
 def is_complete(sudoku_board):
     """Takes in a sudoku board and tests to see if it has been filled in
     correctly."""
