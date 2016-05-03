@@ -66,7 +66,7 @@ def parse_file(filename):
     NumVals = int(f.readline())
 
     #initialize a blank board
-    board= [ [ 0 for i in range(BoardSize) ] for j in range(BoardSize) ]
+    board = [ [ 0 for i in range(BoardSize) ] for j in range(BoardSize) ]
 
     #populate the board with initial values
     for i in range(NumVals):
