@@ -90,8 +90,6 @@ class SudokuBoard:
                 domain.remove(self.CurrentGameBoard[i][j])
         return domain
 
-<<<<<<< HEAD
-=======
     def get_domain(self, row, col):
         row_domain = self.getRowDomain(row, col)
         col_domain = self.getColDomain(row, col)
@@ -99,8 +97,6 @@ class SudokuBoard:
 
         return list(set(row_domain) & set(col_domain) & set(ss_domain))
 
-
->>>>>>> 2122968449a3400938cac12abbce8dd2e1e6166c
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
