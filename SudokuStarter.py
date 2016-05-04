@@ -78,14 +78,14 @@ class SudokuBoard:
         num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
         ss_row_start = row/num_sss * num_sss
         ss_col_start = (col/num_sss) * num_sss
-        print ss_row_start, ss_col_start
+        print ss_row_start, ss_col_start, num_sss
 
         domain = range(1, self.BoardSize+1)
-        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
-            for i in [y for y in range(ss_row_start, ss_row_start+num_sss) if y != col]:
+        for j in range(ss_col_start, ss_col_start+num_sss):
+            for i in range(ss_row_start, ss_row_start+num_sss):
                 print "i and j", i,j
                 print "val there", self.CurrentGameBoard[i][j]
-                if self.CurrentGameBoard[i][j] == 0:
+                if self.CurrentGameBoard[i][j] == 0 or (i, j) == (row, col):
                     continue
                 domain.remove(self.CurrentGameBoard[i][j])
         return domain
