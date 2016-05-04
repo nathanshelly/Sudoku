@@ -59,7 +59,7 @@ class SudokuBoard:
         """Returns row domain of given spot on board (list of values 1-9)"""
         domain = range(1, self.BoardSize+1)
         for i in [x for x in range(0, self.BoardSize) if x != col]:
-            if self.CurrentGameBoard[row][i]:
+            if self.CurrentGameBoard[row][i] == 0:
                 continue
             domain.remove(self.CurrentGameBoard[row][i])
         return domain
@@ -68,21 +68,24 @@ class SudokuBoard:
         """Returns col domain of given spot on board (list of values 1-9)"""
         domain = range(1, self.BoardSize+1)
         for i in [x for x in range(0, self.BoardSize) if x != row]:
-            if self.CurrentGameBoard[i][col]:
+            if self.CurrentGameBoard[i][col] == 0:
                 continue
             domain.remove(self.CurrentGameBoard[i][col])
         return domain
 
     def getSubSquareDomain(self, row, col):
         """Returns subsquare domain of given spot on board (list of values 1-9)"""
-        num_sss = math.sqrt(self.BoardSize) # num_SubSquareS - lolol
-        ss_row_start = row/num_sss
-        ss_col_start = col/num_sss
+        num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
+        ss_row_start = row/num_sss * num_sss
+        ss_col_start = (col/num_sss) * num_sss
+        print ss_row_start, ss_col_start
 
         domain = range(1, self.BoardSize+1)
-        for i in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
-            for j in [x for x in range(ss_row_start, ss_row_start+num_sss) if x != col]:
-                if self.CurrentGameBoard[i][j]:
+        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
+            for i in [y for y in range(ss_row_start, ss_row_start+num_sss) if y != col]:
+                print "i and j", i,j
+                print "val there", self.CurrentGameBoard[i][j]
+                if self.CurrentGameBoard[i][j] == 0:
                     continue
                 domain.remove(self.CurrentGameBoard[i][j])
         return domain
