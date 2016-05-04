@@ -59,18 +59,18 @@ class SudokuBoard:
         """Returns row domain of given spot on board (list of values 1-9)"""
         domain = range(1, self.BoardSize+1)
         for i in [x for x in range(0, self.BoardSize) if x != col]:
-            if self.CurrentGameBoard[row, i]:
+            if self.CurrentGameBoard[row][i]:
                 continue
-            domain.remove(self.CurrentGameBoard[row, i])
+            domain.remove(self.CurrentGameBoard[row][i])
         return domain
 
     def getColDomain(self, row, col):
         """Returns col domain of given spot on board (list of values 1-9)"""
         domain = range(1, self.BoardSize+1)
         for i in [x for x in range(0, self.BoardSize) if x != row]:
-            if self.CurrentGameBoard[i, col]:
+            if self.CurrentGameBoard[i][col]:
                 continue
-            domain.remove(self.CurrentGameBoard[i, col])
+            domain.remove(self.CurrentGameBoard[i][col])
         return domain
 
     def getSubSquareDomain(self, row, col):
