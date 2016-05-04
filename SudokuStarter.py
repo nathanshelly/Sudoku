@@ -90,7 +90,6 @@ class SudokuBoard:
                 domain.remove(self.CurrentGameBoard[i][j])
         return domain
 
-
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -154,7 +153,16 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
-    print "Your code will solve the initial_board here!"
-    print "Remember to return the final board (the SudokuBoard object)."
-    print "I'm simply returning initial_board for demonstration purposes."
-    return initial_board
+    return backtrackingSearch(initial_board)
+
+def backtrackingSearch(pBoard):
+    choice()
+
+def openSpots(pBoard):
+    """Finds all locations on board with value 0"""
+    openSpots = []
+    for i in range(0, pBoard.BoardSize):
+        for j in range(0, pBoard.BoardSize):
+            if not pBoard.CurrentGameBoard[i][j]:
+                openSpots.append((i, j))
+    return openSpots
