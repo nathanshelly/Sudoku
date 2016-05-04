@@ -1,14 +1,13 @@
 #  Nathan Shelly (njs199) and Alexander (Sasha) Weiss (awq325)
 # All group members were present and contributing during all work on this project
 
-#!/usr/bin/env python
 import struct, string, math
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
 
     def __init__(self, size, board):
-      """the constructor for the SudokuBoard"""
+      """Constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
       self.CurrentGameBoard = board #the current state of the game board
 
@@ -55,6 +54,17 @@ class SudokuBoard:
                 print line
             else:
                 print sep
+
+    def getRowDomain(self, row, col):
+        """Returns row domain of given spot on board (list of values 1-9)"""
+
+
+    def getColDomain(self, row, col):
+        """Returns col domain of given spot on board (list of values 1-9)"""
+
+    def getSubSquareDomain(self, row, col):
+        """Returns subsquare domain of given spot on board (list of values 1-9)"""
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds

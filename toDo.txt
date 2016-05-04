@@ -2,7 +2,7 @@ GIVEN A SPOT
     Get the domain for that spot in its:
         row
         column
-        diagonal
+        diagonal - pretty sure we don't need this
         subsquare
 
 Backtrack dumbly
