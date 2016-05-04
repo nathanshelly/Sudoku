@@ -90,6 +90,13 @@ class SudokuBoard:
                 domain.remove(self.CurrentGameBoard[i][j])
         return domain
 
+    def get_domain(self, row, col):
+        row_domain = self.getRowDomain(row, col)
+        col_domain = self.getColDomain(row, col)
+        ss_domain = self.getSubSquareDomain(row, col)
+
+        return list(set(row_domain) & set(col_domain) & set(ss_domain))
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
