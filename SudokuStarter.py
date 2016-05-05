@@ -103,6 +103,35 @@ class SudokuBoard:
                     continue
                 self.boardDomains[i][j] = self.get_domain(i, j)
 
+    def backtrackingSearch(self):
+        if is_complete(self):
+            return self
+
+        spotToPlay = random.choice(openSpots(self))
+        domain = self.get_domain(spotToPlay[0], spotToPlay[1])
+
+        for value in domain:
+            tempBoard = copy.deepcopy(self)
+            result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
+            if result:
+                return result
+
+        # domain is empty or no values worked
+        return False
+
+    def openSpots(self):
+        """Finds all locations on board with value 0"""
+        openSpots = []
+        for i in range(0, self.BoardSize):
+            for j in range(0, self.BoardSize):
+                if not self.CurrentGameBoard[i][j]:
+                    openSpots.append((i, j))
+        return openSpots
+
+    def updateDomains(self, row, col):
+        """Update domains given spot"""
+        
+
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -167,28 +196,3 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
     return backtrackingSearch(initial_board)
-
-def backtrackingSearch(pBoard):
-    if is_complete(pBoard):
-        return pBoard
-
-    spotToPlay = random.choice(openSpots(pBoard))
-    domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
-
-    for value in domain:
-        tempBoard = copy.deepcopy(pBoard)
-        result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
-        if result:
-            return result
-
-    # domain is empty or no values worked
-    return False
-
-def openSpots(pBoard):
-    """Finds all locations on board with value 0"""
-    openSpots = []
-    for i in range(0, pBoard.BoardSize):
-        for j in range(0, pBoard.BoardSize):
-            if not pBoard.CurrentGameBoard[i][j]:
-                openSpots.append((i, j))
-    return openSpots
