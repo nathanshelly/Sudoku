@@ -78,13 +78,10 @@ class SudokuBoard:
         num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
         ss_row_start = row/num_sss * num_sss
         ss_col_start = (col/num_sss) * num_sss
-        print ss_row_start, ss_col_start, num_sss
 
         domain = range(1, self.BoardSize+1)
         for j in range(ss_col_start, ss_col_start+num_sss):
             for i in range(ss_row_start, ss_row_start+num_sss):
-                print "i and j", i,j
-                print "val there", self.CurrentGameBoard[i][j]
                 if self.CurrentGameBoard[i][j] == 0 or (i, j) == (row, col):
                     continue
                 domain.remove(self.CurrentGameBoard[i][j])
@@ -166,9 +163,9 @@ def backtrackingSearch(pBoard):
     if is_complete(pBoard):
         return pBoard
 
+    spotToPlay = random.choice(openSpots(pBoard))
     domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
 
-    spotToPlay = random.choice(openSpots(pBoard))
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
         result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
