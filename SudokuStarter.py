@@ -10,7 +10,7 @@ class SudokuBoard:
       """Constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
       self.CurrentGameBoard = board #the current state of the game board
-      self.boardDomains = [[[] for x in range(0, size)] for x in range(0, size)]
+      self.boardDomains = [[[None] for x in range(0, size)] for x in range(0, size)]
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -168,9 +168,13 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     arguments). Returns the resulting board solution. """
     return backtrackingSearch(initial_board)
 
-def backtrackingSearch(pBoard):
+def backtrackingSearch(pBoard, forward_checking = False):
     if is_complete(pBoard):
         return pBoard
+
+    if forward_checking:
+        if empty_domains(pBoard):
+            return False
 
     spotToPlay = random.choice(openSpots(pBoard))
     domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
@@ -192,3 +196,11 @@ def openSpots(pBoard):
             if not pBoard.CurrentGameBoard[i][j]:
                 openSpots.append((i, j))
     return openSpots
+
+def empty_domains(board):
+    """Check if any cells have an empty domain"""
+    for i in range(0, board.BoardSize):
+        for j in range(0, board.BoardSize):
+            if not board.boardDomains[i][j]:
+                return True
+    return False
