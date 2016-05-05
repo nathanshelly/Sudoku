@@ -10,7 +10,7 @@ class SudokuBoard:
       """Constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
       self.CurrentGameBoard = board #the current state of the game board
-      self.boardDomains = [[[[] for x in range(0, size)] for x in range(0, size)] for x in range(0, size)]
+      self.boardDomains = [[[] for x in range(0, size)] for x in range(0, size)]
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -97,9 +97,11 @@ class SudokuBoard:
 
     def generateBoardDomains(self):
         """Generates correct domains for every spot in board"""
-        for i in self.BoardSize:
-            for j in self.BoardSize:
-                self.boardDomains[i][j] = get_domain(i, j)
+        for i in range(0, self.BoardSize):
+            for j in range(0, self.BoardSize):
+                if self.CurrentGameBoard[i][j] != 0:
+                    continue
+                self.boardDomains[i][j] = self.get_domain(i, j)
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
