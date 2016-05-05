@@ -1,7 +1,7 @@
 #  Nathan Shelly (njs199) and Alexander (Sasha) Weiss (awq325)
 # All group members were present and contributing during all work on this project
 
-import struct, string, math
+import struct, string, math, random, copy
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
@@ -163,7 +163,20 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     return backtrackingSearch(initial_board)
 
 def backtrackingSearch(pBoard):
-    choice()
+    if is_complete(pBoard):
+        return pBoard
+
+    domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
+
+    spotToPlay = random.choice(openSpots(pBoard))
+    for value in domain:
+        tempBoard = copy.deepcopy(pBoard)
+        result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
+        if result:
+            return result
+
+    # domain is empty or no values worked
+    return False
 
 def openSpots(pBoard):
     """Finds all locations on board with value 0"""
