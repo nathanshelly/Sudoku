@@ -12,6 +12,14 @@ class SudokuBoard:
       self.CurrentGameBoard = board #the current state of the game board
       self.boardDomains = [[[None] for x in range(0, size)] for x in range(0, size)]
 
+      # Set all the board's domains at first
+      print "creating new board!"
+      for i in range(0, size):
+          for j in range(0, size):
+              if board[i][j] != 0:
+                  'updating domain'
+                  self.updateDomains(i, j)
+
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
@@ -116,7 +124,43 @@ class SudokuBoard:
 
     def updateDomains(self, row, col):
         """Update domains given spot"""
+        value = self.CurrentGameBoard[row][col]
+        self.boardDomains[row][col] = [None] # set the current spot domain to [None]
 
+        # clear the row
+        for i in range(0, self.BoardSize):
+            if self.boardDomains[row][i] != [None]:
+                try:
+                    self.boardDomains[row][i].remove(value)
+                except:
+                    pass
+        # clear the column
+        for i in range(0, self.BoardSize):
+            if self.boardDomains[i][col] != [None]:
+                try:
+                    self.boardDomains[i][col].remove(value)
+                except:
+                    pass
+        # clear the subsquare
+        num_sss = int(math.sqrt(self.BoardSize))
+        ss_row_start = row/num_sss * num_sss
+        ss_col_start = (col/num_sss) * num_sss
+        for j in range(ss_col_start, ss_col_start+num_sss):
+            for i in range(ss_row_start, ss_row_start+num_sss):
+                if self.CurrentGameBoard[i][j] != [None]:
+                    try:
+                        self.boardDomains[i][j].remove(value)
+                    except:
+                        pass
+
+    def empty_domains(self):
+        print 'new call'
+        for i in range(0, self.BoardSize):
+            for j in range(0, self.BoardSize):
+                print self.boardDomains[i][j]
+                if not self.boardDomains[i][j]:
+                    return True
+        return False
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
@@ -187,8 +231,10 @@ def backtrackingSearch(pBoard, forward_checking = False):
     if is_complete(pBoard):
         return pBoard
 
+    # if any cells have no possible spots, short circuit. Could put this check in updateDomains, but the flag would be ugly to pass.
     if forward_checking:
-        if empty_domains(pBoard):
+        if pBoard.empty_domains():
+            print "short-circuit!"
             return False
 
     spotToPlay = random.choice(pBoard.openSpots())
@@ -196,7 +242,9 @@ def backtrackingSearch(pBoard, forward_checking = False):
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
-        result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
+        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value)
+        tempBoard.updateDomains(spotToPlay[0], spotToPlay[1])
+        result = backtrackingSearch(tempBoard, forward_checking)
         if result:
             return result
 

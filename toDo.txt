@@ -1,2 +1,6 @@
 Heuristics
     Be smarter
+
+Need to initially set all the domains
+Need to update them (should be working)
+Need to pass them along with new boards (maybe don't have to if they're intialized with the board?)

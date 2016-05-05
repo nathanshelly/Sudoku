@@ -7,7 +7,7 @@ file = open("results.txt", "w")
 tempBoard.print_board()
 tempBoard.generateBoardDomains()
 
-winBoard = solve(tempBoard)
+winBoard = solve(tempBoard, forward_checking = True)
 if winBoard:
     winBoard.print_board()
     print is_complete(winBoard)
