@@ -1,6 +1,6 @@
 Heuristics
-    Be smarter
+    MRV - done
+    LCV
+    Degree
 
-Need to initially set all the domains
-Need to update them (should be working)
-Need to pass them along with new boards (maybe don't have to if they're intialized with the board?)
+Refactor to use board itself as domain lists

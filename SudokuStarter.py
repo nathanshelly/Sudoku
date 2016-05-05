@@ -168,6 +168,19 @@ class SudokuBoard:
                     return True
         return False
 
+    def min_domain(self):
+        """Find the cell with the smallest domain"""
+        dom_size = self.BoardSize + 1
+        spot = (-1, -1)
+        for i in range(0, self.BoardSize):
+            for j in range(0, self.BoardSize):
+                if self.boardDomains[i][j] == [None]:
+                    continue
+                if len(self.boardDomains[i][j]) < dom_size:
+                    dom_size = len(self.boardDomains[i][j])
+                    spot = (i, j)
+        return spot
+
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -231,9 +244,9 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
-    return backtrackingSearch(initial_board, forward_checking)
+    return backtrackingSearch(initial_board, forward_checking, MRV)
 
-def backtrackingSearch(pBoard, forward_checking = False):
+def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
     if is_complete(pBoard):
         return pBoard
 
@@ -243,7 +256,11 @@ def backtrackingSearch(pBoard, forward_checking = False):
             # print "short-circuit!"
             return False
 
-    spotToPlay = random.choice(pBoard.openSpots())
+    if MRV:
+        spotToPlay = pBoard.min_domain()
+    else:
+        spotToPlay = random.choice(pBoard.openSpots())
+
     # domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
     domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
 
@@ -251,7 +268,7 @@ def backtrackingSearch(pBoard, forward_checking = False):
         tempBoard = copy.deepcopy(pBoard)
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot
         # tempBoard.updateDomains(spotToPlay[0], spotToPlay[1])
-        result = backtrackingSearch(tempBoard, forward_checking)
+        result = backtrackingSearch(tempBoard, forward_checking, MRV)
         if result:
             return result
 
