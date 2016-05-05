@@ -106,6 +106,9 @@ class SudokuBoard:
 
         return list(set(row_domain) & set(col_domain) & set(ss_domain))
 
+    def get_domain_smart(self, row, col):
+        return self.boardDomains[row][col]
+
     def generateBoardDomains(self):
         """Generates correct domains for every spot in board"""
         for i in range(0, self.BoardSize):
@@ -244,7 +247,8 @@ def backtrackingSearch(pBoard, forward_checking = False):
             return False
 
     spotToPlay = random.choice(pBoard.openSpots())
-    domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
+    # domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
+    domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
