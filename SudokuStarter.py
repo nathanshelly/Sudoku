@@ -13,13 +13,11 @@ class SudokuBoard:
         self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
 
         # Set all the board's domains at first
-        # print "creating new board!"
         for i in range(0, size):
           for j in range(0, size):
               if board[i][j] != 0:
-                #   print 'updating domain'
                   self.updateDomains(i, j)
-        # print "domains after update", self.boardDomains
+
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -131,9 +129,6 @@ class SudokuBoard:
         value = self.CurrentGameBoard[row][col]
         self.boardDomains[row][col] = [None] # set the current spot domain to [None]
 
-        # print "value", value
-        # print "placed spot", row, col
-
         # clear the row
         for i in range(0, self.BoardSize):
             if self.boardDomains[row][i] != [None]:
@@ -143,6 +138,7 @@ class SudokuBoard:
                     # print "rowdomain", self.boardDomains[row][i]
                 except:
                     pass
+
         # clear the column
         for i in range(0, self.BoardSize):
             if self.boardDomains[i][col] != [None]:
@@ -152,6 +148,7 @@ class SudokuBoard:
                     # print "coldomain", self.boardDomains[i][col]
                 except:
                     pass
+
         # clear the subsquare
         num_sss = int(math.sqrt(self.BoardSize))
         ss_row_start = row/num_sss * num_sss
