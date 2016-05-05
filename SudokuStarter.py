@@ -7,18 +7,19 @@ class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
 
     def __init__(self, size, board):
-      """Constructor for the SudokuBoard"""
-      self.BoardSize = size #the size of the board
-      self.CurrentGameBoard = board #the current state of the game board
-      self.boardDomains = [[[None] for x in range(0, size)] for x in range(0, size)]
+        """Constructor for the SudokuBoard"""
+        self.BoardSize = size #the size of the board
+        self.CurrentGameBoard = board #the current state of the game board
+        self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
 
-      # Set all the board's domains at first
-      print "creating new board!"
-      for i in range(0, size):
+        # Set all the board's domains at first
+        # print "creating new board!"
+        for i in range(0, size):
           for j in range(0, size):
               if board[i][j] != 0:
-                  'updating domain'
+                #   print 'updating domain'
                   self.updateDomains(i, j)
+        # print "domains after update", self.boardDomains
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -127,11 +128,16 @@ class SudokuBoard:
         value = self.CurrentGameBoard[row][col]
         self.boardDomains[row][col] = [None] # set the current spot domain to [None]
 
+        # print "value", value
+        # print "placed spot", row, col
+
         # clear the row
         for i in range(0, self.BoardSize):
             if self.boardDomains[row][i] != [None]:
                 try:
                     self.boardDomains[row][i].remove(value)
+                    # print "spot", row, i
+                    # print "rowdomain", self.boardDomains[row][i]
                 except:
                     pass
         # clear the column
@@ -139,6 +145,8 @@ class SudokuBoard:
             if self.boardDomains[i][col] != [None]:
                 try:
                     self.boardDomains[i][col].remove(value)
+                    # print "spot", i, col
+                    # print "coldomain", self.boardDomains[i][col]
                 except:
                     pass
         # clear the subsquare
@@ -154,10 +162,8 @@ class SudokuBoard:
                         pass
 
     def empty_domains(self):
-        print 'new call'
         for i in range(0, self.BoardSize):
             for j in range(0, self.BoardSize):
-                print self.boardDomains[i][j]
                 if not self.boardDomains[i][j]:
                     return True
         return False
@@ -234,7 +240,7 @@ def backtrackingSearch(pBoard, forward_checking = False):
     # if any cells have no possible spots, short circuit. Could put this check in updateDomains, but the flag would be ugly to pass.
     if forward_checking:
         if pBoard.empty_domains():
-            print "short-circuit!"
+            # print "short-circuit!"
             return False
 
     spotToPlay = random.choice(pBoard.openSpots())
@@ -242,8 +248,8 @@ def backtrackingSearch(pBoard, forward_checking = False):
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
-        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value)
-        tempBoard.updateDomains(spotToPlay[0], spotToPlay[1])
+        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot
+        # tempBoard.updateDomains(spotToPlay[0], spotToPlay[1])
         result = backtrackingSearch(tempBoard, forward_checking)
         if result:
             return result
