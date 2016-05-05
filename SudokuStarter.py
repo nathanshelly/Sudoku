@@ -10,7 +10,7 @@ class SudokuBoard:
       """Constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
       self.CurrentGameBoard = board #the current state of the game board
-      self.boardDomains = [[[] for x in range(0, size)] for x in range(0, size)]
+      self.boardDomains = [[[None] for x in range(0, size)] for x in range(0, size)]
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -89,6 +89,8 @@ class SudokuBoard:
         return domain
 
     def get_domain(self, row, col):
+        """Gets true domain for given spot from row, column and subsquare domains"""
+
         row_domain = self.getRowDomain(row, col)
         col_domain = self.getColDomain(row, col)
         ss_domain = self.getSubSquareDomain(row, col)
@@ -103,22 +105,6 @@ class SudokuBoard:
                     continue
                 self.boardDomains[i][j] = self.get_domain(i, j)
 
-    def backtrackingSearch(self):
-        if is_complete(self):
-            return self
-
-        spotToPlay = random.choice(openSpots(self))
-        domain = self.get_domain(spotToPlay[0], spotToPlay[1])
-
-        for value in domain:
-            tempBoard = copy.deepcopy(self)
-            result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
-            if result:
-                return result
-
-        # domain is empty or no values worked
-        return False
-
     def openSpots(self):
         """Finds all locations on board with value 0"""
         openSpots = []
@@ -130,7 +116,7 @@ class SudokuBoard:
 
     def updateDomains(self, row, col):
         """Update domains given spot"""
-        
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
@@ -195,4 +181,24 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
-    return backtrackingSearch(initial_board)
+    return backtrackingSearch(initial_board, forward_checking)
+
+def backtrackingSearch(pBoard, forward_checking = False):
+    if is_complete(pBoard):
+        return pBoard
+
+    if forward_checking:
+        if empty_domains(pBoard):
+            return False
+
+    spotToPlay = random.choice(pBoard.openSpots())
+    domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
+
+    for value in domain:
+        tempBoard = copy.deepcopy(pBoard)
+        result = backtrackingSearch(tempBoard.set_value(spotToPlay[0], spotToPlay[1], value))
+        if result:
+            return result
+
+    # domain is empty or no values worked
+    return False
