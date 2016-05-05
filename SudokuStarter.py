@@ -10,6 +10,7 @@ class SudokuBoard:
       """Constructor for the SudokuBoard"""
       self.BoardSize = size #the size of the board
       self.CurrentGameBoard = board #the current state of the game board
+      self.boardDomains = [[[[] for x in range(0, size)] for x in range(0, size)] for x in range(0, size)]
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
