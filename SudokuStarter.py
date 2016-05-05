@@ -95,6 +95,12 @@ class SudokuBoard:
 
         return list(set(row_domain) & set(col_domain) & set(ss_domain))
 
+    def generateBoardDomains(self):
+        """Generates correct domains for every spot in board"""
+        for i in self.BoardSize:
+            for j in self.BoardSize:
+                self.boardDomains[i][j] = get_domain(i, j)
+
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
