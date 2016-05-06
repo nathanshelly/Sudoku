@@ -29,13 +29,22 @@ import time, os
 #
 # print "Number of fails:", numberOfFails
 
+# resultsFile = open("results.txt", "w")
 
-tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
-resultsFile = open("results.txt", "w")
-winBoard = solve(tempBoard, forward_checking = True, MRV = True)
-if winBoard:
-    winBoard.print_board()
-    print is_complete(winBoard)
-    resultsFile.write(str(is_complete(winBoard)))
+acc = 0
+for i in range(0, 10):
+    tempBoard = init_board('input_puzzles/more/16x16/16x16.1.sudoku')
+    startTime = time.clock()
+    winBoard = solve(tempBoard, forward_checking = True, MRV = False)
+    endTime = time.clock()
 
-resultsFile.close()
+    if winBoard:
+        totalTime = endTime - startTime
+        acc += totalTime
+        print "Board #1 took " + str(round(totalTime, 3)) + " seconds to complete"
+        # winBoard.print_board()
+        print is_complete(winBoard)
+        # resultsFile.write(str(is_complete(winBoard)))
+
+    # resultsFile.close()
+print "Ten boards, average time was: " + str(round(acc/10.0, 3))

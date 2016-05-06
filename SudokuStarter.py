@@ -6,17 +6,19 @@ import struct, string, math, random, copy
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
 
-    def __init__(self, size, board):
+    def __init__(self, size, board, domains = []):
         """Constructor for the SudokuBoard"""
         self.BoardSize = size #the size of the board
         self.CurrentGameBoard = board #the current state of the game board
-        self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
-
-        # Set all the board's domains at first
-        for i in range(0, size):
-          for j in range(0, size):
-              if board[i][j] != 0:
-                  self.updateDomains(i, j)
+        if not domains:
+            self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
+            # Set all the board's domains at first
+            for i in range(0, size):
+              for j in range(0, size):
+                  if board[i][j] != 0:
+                      self.updateDomains(i, j)
+        else:
+            self.boardDomains = domains
 
 
     def set_value(self, row, col, value):
@@ -25,8 +27,10 @@ class SudokuBoard:
 
         # add the value to the appropriate position on the board
         self.CurrentGameBoard[row][col]=value
+        # update the domains appropriately
+        self.updateDomains(row, col)
         #return a new board of the same size with the value added
-        return SudokuBoard(self.BoardSize, self.CurrentGameBoard)
+        return SudokuBoard(self.BoardSize, self.CurrentGameBoard, domains = self.boardDomains)
 
     def print_board(self):
         """Prints the current game board. Leaves unassigned spots blank."""
@@ -181,6 +185,9 @@ class SudokuBoard:
                     spot = (i, j)
         return spot
 
+    def num_constrains(self, row, col):
+        """The number of variables a given move impacts"""
+
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -244,6 +251,7 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
+
     return backtrackingSearch(initial_board, forward_checking, MRV)
 
 def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
@@ -266,8 +274,7 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
-        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot
-        # tempBoard.updateDomains(spotToPlay[0], spotToPlay[1])
+        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         result = backtrackingSearch(tempBoard, forward_checking, MRV)
         if result:
             return result
