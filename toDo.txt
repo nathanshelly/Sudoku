@@ -1,0 +1,6 @@
+Heuristics
+    MRV - done
+    LCV
+    Degree
+
+Refactor to use board itself as domain lists
