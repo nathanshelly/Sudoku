@@ -8,8 +8,8 @@ class SudokuBoard:
 
     def __init__(self, size, board, domains = []):
         """Constructor for the SudokuBoard"""
-        self.BoardSize = size #the size of the board
-        self.CurrentGameBoard = board #the current state of the game board
+        self.BoardSize = size # the size of the board
+        self.CurrentGameBoard = board # the current state of the game board
         if not domains:
             self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
             # Set all the board's domains at first
@@ -256,6 +256,14 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
 def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
     if is_complete(pBoard):
         return pBoard
+
+    pBoard.print_board()
+    # print pBoard.boardDomains
+
+    num = 0
+    for row in pBoard.boardDomains:
+        print "Row number", num, "equals ", row
+        num += 1
 
     # if any cells have no possible spots, short circuit. Could put this check in updateDomains, but the flag would be ugly to pass.
     if forward_checking:
