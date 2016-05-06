@@ -18,7 +18,6 @@ class SudokuBoard:
               if board[i][j] != 0:
                   self.updateDomains(i, j)
 
-
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
