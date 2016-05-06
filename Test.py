@@ -29,7 +29,7 @@ import time, os
 #
 # print "Number of fails:", numberOfFails
 
-# resultsFile = open("results.txt", "w")
+resultsFile = open("results.txt", "w")
 
 acc = 0
 for i in range(0, 10):
@@ -44,7 +44,7 @@ for i in range(0, 10):
         print "Board #1 took " + str(round(totalTime, 3)) + " seconds to complete"
         # winBoard.print_board()
         print is_complete(winBoard)
-        # resultsFile.write(str(is_complete(winBoard)))
+        resultsFile.write(str(is_complete(winBoard)))
 
-    # resultsFile.close()
+resultsFile.close()
 print "Ten boards, average time was: " + str(round(acc/10.0, 3))

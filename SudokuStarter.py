@@ -11,23 +11,24 @@ class SudokuBoard:
         self.BoardSize = size #the size of the board
         self.CurrentGameBoard = board #the current state of the game board
         if not domains:
+            # print "first initialization"
             self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
             # Set all the board's domains at first
             for i in range(0, size):
               for j in range(0, size):
                   if board[i][j] != 0:
-                      self.updateDomains(i, j)
+                      self.updateDomains(i, j, False)
+            # self.print_board()
         else:
             self.boardDomains = domains
 
-    def set_value(self, row, col, value):
+    def set_value(self, row, col, value, forward_checking):
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
 
-        # add the value to the appropriate position on the board
         self.CurrentGameBoard[row][col]=value
-        # update the domains appropriately
-        self.updateDomains(row, col)
+        if not self.updateDomains(row, col, forward_checking) and forward_checking:
+            return False
         #return a new board of the same size with the value added
         return SudokuBoard(self.BoardSize, self.CurrentGameBoard, domains = self.boardDomains)
 
@@ -127,7 +128,7 @@ class SudokuBoard:
                     openSpots.append((i, j))
         return openSpots
 
-    def updateDomains(self, row, col):
+    def updateDomains(self, row, col, forward_checking):
         """Update domains given spot"""
         value = self.CurrentGameBoard[row][col]
         self.boardDomains[row][col] = [None] # set the current spot domain to [None]
@@ -137,8 +138,8 @@ class SudokuBoard:
             if self.boardDomains[row][i] != [None]:
                 try:
                     self.boardDomains[row][i].remove(value)
-                    # print "spot", row, i
-                    # print "rowdomain", self.boardDomains[row][i]
+                    if forward_checking and not self.boardDomains[row][i]:
+                        return False
                 except:
                     pass
 
@@ -147,8 +148,8 @@ class SudokuBoard:
             if self.boardDomains[i][col] != [None]:
                 try:
                     self.boardDomains[i][col].remove(value)
-                    # print "spot", i, col
-                    # print "coldomain", self.boardDomains[i][col]
+                    if forward_checking and not self.boardDomains[i][col]:
+                        return False
                 except:
                     pass
 
@@ -161,8 +162,11 @@ class SudokuBoard:
                 if self.CurrentGameBoard[i][j] != [None]:
                     try:
                         self.boardDomains[i][j].remove(value)
+                        if forward_checking and not self.boardDomains[i][j]:
+                            return False
                     except:
                         pass
+        return True
 
     def empty_domains(self):
         for i in range(0, self.BoardSize):
@@ -257,12 +261,6 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
     if is_complete(pBoard):
         return pBoard
 
-    # if any cells have no possible spots, short circuit. Could put this check in updateDomains, but the flag would be ugly to pass.
-    if forward_checking:
-        if pBoard.empty_domains():
-            # print "short-circuit!"
-            return False
-
     if MRV:
         spotToPlay = pBoard.min_domain()
     else:
@@ -273,7 +271,9 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
-        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
+        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value, forward_checking) # set a value for that spot and update domains
+        if not tempBoard:
+            return False
         result = backtrackingSearch(tempBoard, forward_checking, MRV)
         if result:
             return result
