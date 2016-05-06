@@ -74,7 +74,7 @@ class SudokuBoard:
                 continue
             domain.remove(self.CurrentGameBoard[row][i])
         return domain
-        
+
     def getColDomain(self, row, col):
         """Returns col domain of given spot on board (list of values 1-9)"""
         domain = range(1, self.BoardSize+1)
