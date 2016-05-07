@@ -66,46 +66,46 @@ class SudokuBoard:
             else:
                 print sep
 
-    def getRowDomain(self, row, col):
-        """Returns row domain of given spot on board (list of values 1-9)"""
-        domain = range(1, self.BoardSize+1)
-        for i in [x for x in range(0, self.BoardSize) if x != col]:
-            if self.CurrentGameBoard[row][i] == 0:
-                continue
-            domain.remove(self.CurrentGameBoard[row][i])
-        return domain
-
-    def getColDomain(self, row, col):
-        """Returns col domain of given spot on board (list of values 1-9)"""
-        domain = range(1, self.BoardSize+1)
-        for i in [x for x in range(0, self.BoardSize) if x != row]:
-            if self.CurrentGameBoard[i][col] == 0:
-                continue
-            domain.remove(self.CurrentGameBoard[i][col])
-        return domain
-
-    def getSubSquareDomain(self, row, col):
-        """Returns subsquare domain of given spot on board (list of values 1-9)"""
-        num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
-        ss_row_start = row/num_sss * num_sss
-        ss_col_start = (col/num_sss) * num_sss
-
-        domain = range(1, self.BoardSize+1)
-        for j in range(ss_col_start, ss_col_start+num_sss):
-            for i in range(ss_row_start, ss_row_start+num_sss):
-                if self.CurrentGameBoard[i][j] == 0 or (i, j) == (row, col):
-                    continue
-                domain.remove(self.CurrentGameBoard[i][j])
-        return domain
-
-    def get_domain(self, row, col):
-        """Gets true domain for given spot from row, column and subsquare domains"""
-
-        row_domain = self.getRowDomain(row, col)
-        col_domain = self.getColDomain(row, col)
-        ss_domain = self.getSubSquareDomain(row, col)
-
-        return list(set(row_domain) & set(col_domain) & set(ss_domain))
+    # def getRowDomain(self, row, col):
+    #     """Returns row domain of given spot on board (list of values 1-9)"""
+    #     domain = range(1, self.BoardSize+1)
+    #     for i in [x for x in range(0, self.BoardSize) if x != col]:
+    #         if self.CurrentGameBoard[row][i] == 0:
+    #             continue
+    #         domain.remove(self.CurrentGameBoard[row][i])
+    #     return domain
+    #
+    # def getColDomain(self, row, col):
+    #     """Returns col domain of given spot on board (list of values 1-9)"""
+    #     domain = range(1, self.BoardSize+1)
+    #     for i in [x for x in range(0, self.BoardSize) if x != row]:
+    #         if self.CurrentGameBoard[i][col] == 0:
+    #             continue
+    #         domain.remove(self.CurrentGameBoard[i][col])
+    #     return domain
+    #
+    # def getSubSquareDomain(self, row, col):
+    #     """Returns subsquare domain of given spot on board (list of values 1-9)"""
+    #     num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
+    #     ss_row_start = row/num_sss * num_sss
+    #     ss_col_start = (col/num_sss) * num_sss
+    #
+    #     domain = range(1, self.BoardSize+1)
+    #     for j in range(ss_col_start, ss_col_start+num_sss):
+    #         for i in range(ss_row_start, ss_row_start+num_sss):
+    #             if self.CurrentGameBoard[i][j] == 0 or (i, j) == (row, col):
+    #                 continue
+    #             domain.remove(self.CurrentGameBoard[i][j])
+    #     return domain
+    #
+    # def get_domain(self, row, col):
+    #     """Gets true domain for given spot from row, column and subsquare domains"""
+    #
+    #     row_domain = self.getRowDomain(row, col)
+    #     col_domain = self.getColDomain(row, col)
+    #     ss_domain = self.getSubSquareDomain(row, col)
+    #
+    #     return list(set(row_domain) & set(col_domain) & set(ss_domain))
 
     def get_domain_smart(self, row, col):
         return self.boardDomains[row][col]
@@ -126,6 +126,34 @@ class SudokuBoard:
                 if not self.CurrentGameBoard[i][j]:
                     openSpots.append((i, j))
         return openSpots
+
+    def iterate_unassigned_domains(self, function):
+        for i in range(0, self.BoardSize):
+            if self.boardDomains[row][i] != [None]:
+                try:
+                    self.boardDomains[row][i].remove(value)
+                except ValueError:
+                    pass
+
+        # clear the column
+        for i in range(0, self.BoardSize):
+            if self.boardDomains[i][col] != [None]:
+                try:
+                    self.boardDomains[i][col].remove(value)
+                except ValueError:
+                    pass
+
+        # clear the subsquare
+        num_sss = int(math.sqrt(self.BoardSize))
+        ss_row_start = row/num_sss * num_sss
+        ss_col_start = (col/num_sss) * num_sss
+        for j in range(ss_col_start, ss_col_start+num_sss):
+            for i in range(ss_row_start, ss_row_start+num_sss):
+                if self.CurrentGameBoard[i][j] != [None]:
+                    try:
+                        self.boardDomains[i][j].remove(value)
+                    except:
+                        pass
 
     def updateDomains(self, row, col):
         """Update domains given spot"""
@@ -183,7 +211,7 @@ class SudokuBoard:
 
     def all_placed(self):
         # is the board full
-        for row in range(self.BoardSize);
+        for row in range(self.BoardSize):
             for col in range(self.BoardSize):
                 if self.CurrentGameBoard[row][col] == 0:
                     return False
@@ -191,6 +219,8 @@ class SudokuBoard:
 
     def num_constrains(self, row, col):
         """The number of variables a given move impacts"""
+
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
