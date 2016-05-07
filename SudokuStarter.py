@@ -3,6 +3,10 @@
 
 import struct, string, math, random, copy
 
+consistency_checks = 0
+max_consistency_checks = 10
+print_timeout = True
+
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
 
@@ -249,10 +253,21 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
+    global print_timeout
+    print_timeout = True
 
     return backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
+    global consistency_checks
+    global max_consistency_checks
+    global print_timeout
+    if consistency_checks > max_consistency_checks:
+        if print_timeout:
+            print "timed out"
+            print_timeout = False
+        return False
+    consistency_checks += 1
 
     if is_complete(pBoard):
         return pBoard

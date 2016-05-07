@@ -13,4 +13,3 @@ if winBoard:
     print is_complete(winBoard)
 else:
     print "fuck"
-    tempBoard.print_board()
