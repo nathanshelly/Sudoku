@@ -65,7 +65,7 @@ class SudokuBoard:
                 print line
             else:
                 print sep
-                
+
     def get_domain_smart(self, row, col):
         return self.boardDomains[row][col]
 
@@ -121,6 +121,9 @@ class SudokuBoard:
         # print "hi"
 
         self.iterate_unassigned_domains(row, col, self.remove_val)
+
+    def countTouched(self, row, col):
+        return self.iterate_unassigned_domains(row, col, self.count)
 
     def empty_domains(self):
         for i in range(0, self.BoardSize):
