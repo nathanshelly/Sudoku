@@ -298,8 +298,7 @@ def init_board(file_name):
     board = parse_file(file_name)
     return SudokuBoard(len(board), board)
 
-def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
-    LCV = False):
+def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_checking = False):
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
@@ -307,6 +306,10 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     global consistency_checks
     print_timeout = True
     consistency_checks = 0
+
+
+    args = {'forward_checking': forward_checking, 'MRV': MRV, 'Degree': Degree, 'LCV': LCV}
+    print 'Solve arguments ' + str(args)
 
     result = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
     return result
