@@ -127,21 +127,17 @@ class SudokuBoard:
                     openSpots.append((i, j))
         return openSpots
 
-    def iterate_unassigned_domains(self, function):
+    def iterate_unassigned_domains(self, row, col, function):
+        value = self.CurrentGameBoard[row][col]
+
         for i in range(0, self.BoardSize):
             if self.boardDomains[row][i] != [None]:
-                try:
-                    self.boardDomains[row][i].remove(value)
-                except ValueError:
-                    pass
+                function(row, col, value)
 
         # clear the column
         for i in range(0, self.BoardSize):
             if self.boardDomains[i][col] != [None]:
-                try:
-                    self.boardDomains[i][col].remove(value)
-                except ValueError:
-                    pass
+                function(row, col, value)
 
         # clear the subsquare
         num_sss = int(math.sqrt(self.BoardSize))
@@ -150,44 +146,17 @@ class SudokuBoard:
         for j in range(ss_col_start, ss_col_start+num_sss):
             for i in range(ss_row_start, ss_row_start+num_sss):
                 if self.CurrentGameBoard[i][j] != [None]:
-                    try:
-                        self.boardDomains[i][j].remove(value)
-                    except:
-                        pass
+                    function(row, col, value)
+
+    def remove_val(self, r, c, value):
+        try:
+            self.boardDomains[r][c].remove(value)
+        except ValueError:
+            pass
 
     def updateDomains(self, row, col):
-        """Update domains given spot"""
-        value = self.CurrentGameBoard[row][col]
-        self.boardDomains[row][col] = [None] # set the current spot domain to [None]
-
-        # clear the row
-        for i in range(0, self.BoardSize):
-            if self.boardDomains[row][i] != [None]:
-                try:
-                    self.boardDomains[row][i].remove(value)
-                except ValueError:
-                    pass
-
-        # clear the column
-        for i in range(0, self.BoardSize):
-            if self.boardDomains[i][col] != [None]:
-                try:
-                    self.boardDomains[i][col].remove(value)
-                except ValueError:
-                    pass
-
-        # clear the subsquare
-        num_sss = int(math.sqrt(self.BoardSize))
-        ss_row_start = row/num_sss * num_sss
-        ss_col_start = (col/num_sss) * num_sss
-        for j in range(ss_col_start, ss_col_start+num_sss):
-            for i in range(ss_row_start, ss_row_start+num_sss):
-                if self.CurrentGameBoard[i][j] != [None]:
-                    try:
-                        self.boardDomains[i][j].remove(value)
-                    except:
-                        pass
-        return True
+        self.boardDomains[row][col] = [None]
+        self.iterate_unassigned_domains(row, col, self.remove_val)
 
     def empty_domains(self):
         for i in range(0, self.BoardSize):
