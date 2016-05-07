@@ -66,6 +66,16 @@ class SudokuBoard:
             num_placed.append(num)
         return num_placed
 
+    def compute_ss_num(self, row, col):
+        num_ss = int(math.sqrt(self.BoardSize))
+        return (col//num_ss) + (row//num_ss) * num_ss
+
+    def update_placed(self, row, col):
+        """Update the number of placed variables in rows, columns, and ss's"""
+        self.num_in_rows[row] += 1
+        self.num_in_cols[col] += 1
+        self.num_in_ss[self.compute_ss_num(row, col)] += 1
+
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
@@ -73,6 +83,7 @@ class SudokuBoard:
         self.CurrentGameBoard[row][col]=value
         self.open_spots.remove((row, col))
         self.updateDomains(row, col)
+        self.update_placed(row, col)
 
         info = {"domains":self.boardDomains, "open_spots":self.open_spots, "num_in_rows":self.num_in_rows, "num_in_cols":self.num_in_cols, "num_in_ss":self.num_in_ss}
 
@@ -160,31 +171,13 @@ class SudokuBoard:
     def getDegreeSpot(self):
         num = -1
         spot = (-1, -1)
-        num_ss = int(math.sqrt(self.BoardSize))
         for i, j in self.open_spots:
-                ss_num = (j//num_ss) + (i//num_ss) * num_ss
+                ss_num = self.compute_ss_num(i, j)
                 temp_num = sum([self.num_in_rows[i], self.num_in_cols[j], self.num_in_ss[ss_num]])
                 if temp_num > num:
                     num = temp_num
                     spot = (i, j)
         return spot
-
-
-        # inOut = [0]
-        # temp = -1
-        # spot = (-1, -1)
-        #
-        # for row in range(self.BoardSize):
-        #     for col in range(self.BoardSize):
-        #         if self.get_domain_smart(row, col) == [None]:
-        #             continue
-        #         self.iterate_unassigned_domains(row, col, self.incrementUnassigned, inOut)
-        #         if inOut[0] > temp:
-        #             temp = inOut[0]
-        #             spot = (row, col)
-        #         inOut[0] = 0
-        #
-        # return spot
 
     def incrementUnassigned(self, row, col, inOut):
         if self.boardDomains[row][col] != [None]:

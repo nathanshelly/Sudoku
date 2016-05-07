@@ -5,7 +5,7 @@ tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
 tempBoard.print_board()
 
 startTime = time.clock()
-winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = True, LCV = False)
+winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = False)
 endTime = time.clock()
 
 if winBoard:
