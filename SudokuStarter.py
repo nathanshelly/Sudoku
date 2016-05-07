@@ -254,6 +254,9 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False, Degree = F
 
     # domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
     domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
+    if LCV:
+        domainOrder = pBoard.constrained_by_domain(row, col)
+        domain = [value for (constraint, value) in sorted(zip(domainOrder, domain))]
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
