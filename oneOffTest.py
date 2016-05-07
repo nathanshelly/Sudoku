@@ -1,7 +1,8 @@
 from SudokuStarter import *
 import time, os
 
-tempBoard = init_board('input_puzzles/easy/4_4.sudoku')
+tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
+tempBoard.print_board()
 
 startTime = time.clock()
 winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = True, LCV = False)
