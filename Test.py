@@ -1,9 +1,9 @@
 from SudokuStarter import *
 import time, os
-#
-# resultsFile = open("results.txt", "w")
-# path = 'input_puzzles/more/9x9'
-#
+
+resultsFile = open("results.txt", "w")
+path = 'input_puzzles/more/9x9'
+
 # counter = 1
 # numberOfFails = 0
 #
@@ -13,7 +13,7 @@ import time, os
 #         # tempBoard.print_board()
 #
 #         startTime = time.clock()
-#         winBoard = solve(tempBoard, forward_checking = True, MRV = False)
+#         winBoard = solve(tempBoard, forward_checking = True, MRV = True)
 #         endTime = time.clock()
 #
 #         if winBoard:
@@ -29,24 +29,23 @@ import time, os
 #
 # print "Number of fails:", numberOfFails
 
+
 resultsFile = open("results.txt", "w")
-# path = 'input_puzzles/more/9x9/9x9.1.sudoku'
-path = 'input_puzzles/easy/4_4.sudoku'
 
 acc = 0
 for i in range(0, 10):
-    tempBoard = init_board(path)
+    tempBoard = init_board('input_puzzles/easy/4_4.sudoku')
     startTime = time.clock()
-    winBoard = solve(tempBoard, forward_checking = True, MRV = False)
+    winBoard = solve(tempBoard, forward_checking = False, MRV = False, Degree = True)
     endTime = time.clock()
 
     if winBoard:
         totalTime = endTime - startTime
         acc += totalTime
-        print "Board " + str(i) + " took " + str(round(totalTime, 4)) + " seconds to complete"
+        print "Board " + str(i) + " took " + str(round(totalTime, 3)) + " seconds to complete"
         # winBoard.print_board()
         print is_complete(winBoard)
         resultsFile.write(str(is_complete(winBoard)))
 
 resultsFile.close()
-print "Ten boards, average time was: " + str(round(acc/10.0, 4))
+print "Ten boards, average time was: " + str(round(acc/10.0, 5))

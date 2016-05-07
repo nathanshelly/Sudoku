@@ -118,8 +118,26 @@ class SudokuBoard:
 
         self.iterate_unassigned_domains(row, col, self.remove_val, value)
 
-    def countTouched(self, row, col):
-        return self.iterate_unassigned_domains(row, col, self.count)
+    def getDegreeSpot(self):
+
+        inOut = [0]
+        temp = -1
+        spot = (-1, -1)
+
+        for row in range(self.BoardSize):
+            for col in range(self.BoardSize):
+                self.iterate_unassigned_domains(row, col, self.incrementUnassigned, inOut)
+                if inOut[0] > temp:
+                    temp = inOut[0]
+                    spot = (row, col)
+                inOut[0] = 0
+
+        return spot
+
+    def incrementUnassigned(self, row, col, inOut):
+        if self.boardDomains[row][col] != [None]:
+            inOut[0] += 1
+
 
     def empty_domains(self):
         for i in range(self.BoardSize):
@@ -217,9 +235,9 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
 
-    return backtrackingSearch(initial_board, forward_checking, MRV)
+    return backtrackingSearch(initial_board, forward_checking, MRV, Degree)
 
-def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
+def backtrackingSearch(pBoard, forward_checking = False, MRV = False, Degree = False):
     if is_complete(pBoard):
         return pBoard
 
@@ -229,6 +247,8 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
 
     if MRV:
         spotToPlay = pBoard.min_domain()
+    elif Degree:
+        spotToPlay = pBoard.getDegreeSpot()
     else:
         spotToPlay = random.choice(pBoard.openSpots())
 
