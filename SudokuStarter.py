@@ -258,9 +258,12 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
     global print_timeout
+    global consistency_checks
     print_timeout = True
+    consistency_checks = 0
 
-    return backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
+    result = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
+    return result
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     global consistency_checks
@@ -305,7 +308,7 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
         if result:
-            return result
+            return result, consistency_checks
 
     # domain is empty or no values worked
     return False
