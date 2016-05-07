@@ -126,6 +126,8 @@ class SudokuBoard:
 
         for row in range(self.BoardSize):
             for col in range(self.BoardSize):
+                if self.get_domain_smart(row, col) == [None]:
+                    continue
                 self.iterate_unassigned_domains(row, col, self.incrementUnassigned, inOut)
                 if inOut[0] > temp:
                     temp = inOut[0]
@@ -251,6 +253,7 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     return backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
+
     if is_complete(pBoard):
         return pBoard
 
@@ -265,11 +268,11 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     else:
         spotToPlay = random.choice(pBoard.openSpots())
 
-    # domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
     domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
+
     if LCV:
         domainOrder = pBoard.constrained_by_domain(spotToPlay[0], spotToPlay[1])
-        domain = [value for (constraint, value) in sorted(zip(domainOrder, domain))]
+        domain = [value for (constraint,  value) in sorted(zip(domainOrder, domain))]
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)

@@ -36,7 +36,7 @@ acc = 0
 for i in range(0, 50):
     tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
     startTime = time.clock()
-    winBoard = solve(tempBoard, forward_checking = True, MRV = True, Degree = False, LCV = True)
+    winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = False)
     endTime = time.clock()
 
     if winBoard:
