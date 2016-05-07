@@ -269,7 +269,6 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
 
     if is_complete(pBoard):
         return pBoard
-
     if pBoard.empty_domains():
         return False
 
