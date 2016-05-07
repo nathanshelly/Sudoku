@@ -4,7 +4,7 @@
 import struct, string, math, random, copy
 
 consistency_checks = 0
-max_consistency_checks = 500,000
+max_consistency_checks = 500000
 print_timeout = True
 
 class SudokuBoard:
@@ -188,6 +188,10 @@ class SudokuBoard:
 
         return constrains
 
+    def check_consistency(self, row, col, value):
+        if value not in self.boardDomains[row][col]:
+            return False
+        return True
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
@@ -265,20 +269,12 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     global consistency_checks
     global max_consistency_checks
     global print_timeout
-    # print "Num, consistency_checks" consistency_checks
-    if consistency_checks > max_consistency_checks:
-        if print_timeout:
-            print "timed out"
-            print_timeout = False
-        return False
-    consistency_checks += 1
 
     if is_complete(pBoard):
         return pBoard
 
-    if forward_checking:
-        if pBoard.empty_domains():
-            return False
+    if pBoard.empty_domains():
+        return False
 
     if MRV:
         spotToPlay = pBoard.min_domain()
@@ -287,14 +283,29 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     else:
         spotToPlay = random.choice(pBoard.openSpots())
 
-    domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
+    if forward_checking:
+        domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
+    else:
+        domain = range(1, pBoard.BoardSize+1)
 
     if LCV:
         domainOrder = pBoard.constrained_by_domain(spotToPlay[0], spotToPlay[1])
         domain = [value for (constraint,  value) in sorted(zip(domainOrder, domain))]
 
     for value in domain:
+        if consistency_checks > max_consistency_checks:
+            if print_timeout:
+                print "timed out"
+                print_timeout = False
+            return False
+        consistency_checks += 1
+
         tempBoard = copy.deepcopy(pBoard)
+
+        if not forward_checking:
+            if not tempBoard.check_consistency(spotToPlay[0], spotToPlay[1], value):
+                continue
+
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
         if result:
