@@ -65,48 +65,7 @@ class SudokuBoard:
                 print line
             else:
                 print sep
-
-    # def getRowDomain(self, row, col):
-    #     """Returns row domain of given spot on board (list of values 1-9)"""
-    #     domain = range(1, self.BoardSize+1)
-    #     for i in [x for x in range(0, self.BoardSize) if x != col]:
-    #         if self.CurrentGameBoard[row][i] == 0:
-    #             continue
-    #         domain.remove(self.CurrentGameBoard[row][i])
-    #     return domain
-    #
-    # def getColDomain(self, row, col):
-    #     """Returns col domain of given spot on board (list of values 1-9)"""
-    #     domain = range(1, self.BoardSize+1)
-    #     for i in [x for x in range(0, self.BoardSize) if x != row]:
-    #         if self.CurrentGameBoard[i][col] == 0:
-    #             continue
-    #         domain.remove(self.CurrentGameBoard[i][col])
-    #     return domain
-    #
-    # def getSubSquareDomain(self, row, col):
-    #     """Returns subsquare domain of given spot on board (list of values 1-9)"""
-    #     num_sss = int(math.sqrt(self.BoardSize)) # num_SubSquareS - lolol
-    #     ss_row_start = row/num_sss * num_sss
-    #     ss_col_start = (col/num_sss) * num_sss
-    #
-    #     domain = range(1, self.BoardSize+1)
-    #     for j in range(ss_col_start, ss_col_start+num_sss):
-    #         for i in range(ss_row_start, ss_row_start+num_sss):
-    #             if self.CurrentGameBoard[i][j] == 0 or (i, j) == (row, col):
-    #                 continue
-    #             domain.remove(self.CurrentGameBoard[i][j])
-    #     return domain
-    #
-    # def get_domain(self, row, col):
-    #     """Gets true domain for given spot from row, column and subsquare domains"""
-    #
-    #     row_domain = self.getRowDomain(row, col)
-    #     col_domain = self.getColDomain(row, col)
-    #     ss_domain = self.getSubSquareDomain(row, col)
-    #
-    #     return list(set(row_domain) & set(col_domain) & set(ss_domain))
-
+                
     def get_domain_smart(self, row, col):
         return self.boardDomains[row][col]
 
