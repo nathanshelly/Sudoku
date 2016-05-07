@@ -132,30 +132,35 @@ class SudokuBoard:
 
         for i in range(0, self.BoardSize):
             if self.boardDomains[row][i] != [None]:
-                function(row, col, value)
+                function(row, i, value)
 
         # clear the column
         for i in range(0, self.BoardSize):
             if self.boardDomains[i][col] != [None]:
-                function(row, col, value)
+                function(i, col, value)
 
         # clear the subsquare
         num_sss = int(math.sqrt(self.BoardSize))
         ss_row_start = row/num_sss * num_sss
         ss_col_start = (col/num_sss) * num_sss
-        for j in range(ss_col_start, ss_col_start+num_sss):
-            for i in range(ss_row_start, ss_row_start+num_sss):
+        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
+            for i in [x for x in range(ss_row_start, ss_row_start+num_sss) if x != col]:
                 if self.CurrentGameBoard[i][j] != [None]:
-                    function(row, col, value)
+                    function(i, j, value)
 
     def remove_val(self, r, c, value):
         try:
+            # print self.boardDomains[r][c]
             self.boardDomains[r][c].remove(value)
+            # print "removing"
         except ValueError:
             pass
+            # print "valueerror"
 
     def updateDomains(self, row, col):
         self.boardDomains[row][col] = [None]
+        # print "hi"
+
         self.iterate_unassigned_domains(row, col, self.remove_val)
 
     def empty_domains(self):
@@ -188,8 +193,6 @@ class SudokuBoard:
 
     def num_constrains(self, row, col):
         """The number of variables a given move impacts"""
-
-
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
@@ -277,8 +280,6 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False):
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
-        if not tempBoard:
-            return False
         result = backtrackingSearch(tempBoard, forward_checking, MRV)
         if result:
             return result
