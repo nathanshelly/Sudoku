@@ -175,7 +175,7 @@ class SudokuBoard:
         domain = self.get_domain_smart(row, col)
         constrains = [-1]*len(domain)
 
-        for i in range(domain):
+        for i in range(len(domain)):
             counter = [0]
             self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter)
             constrains[i] = counter[0]
@@ -248,9 +248,9 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
 
-    return backtrackingSearch(initial_board, forward_checking, MRV, Degree)
+    return backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
 
-def backtrackingSearch(pBoard, forward_checking = False, MRV = False, Degree = False):
+def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     if is_complete(pBoard):
         return pBoard
 
@@ -268,13 +268,13 @@ def backtrackingSearch(pBoard, forward_checking = False, MRV = False, Degree = F
     # domain = pBoard.get_domain(spotToPlay[0], spotToPlay[1])
     domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
     if LCV:
-        domainOrder = pBoard.constrained_by_domain(row, col)
+        domainOrder = pBoard.constrained_by_domain(spotToPlay[0], spotToPlay[1])
         domain = [value for (constraint, value) in sorted(zip(domainOrder, domain))]
 
     for value in domain:
         tempBoard = copy.deepcopy(pBoard)
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
-        result = backtrackingSearch(tempBoard, forward_checking, MRV)
+        result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
         if result:
             return result
 
