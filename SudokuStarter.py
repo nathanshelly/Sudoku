@@ -138,7 +138,6 @@ class SudokuBoard:
         if self.boardDomains[row][col] != [None]:
             inOut[0] += 1
 
-
     def empty_domains(self):
         for i in range(self.BoardSize):
             for j in range(self.BoardSize):
@@ -167,8 +166,22 @@ class SudokuBoard:
                     return False
         return True
 
-    def num_constrains(self, row, col):
+    def in_domain(self, r, c, value, counter):
+        if value in self.get_domain_smart(r, c):
+            counter[0] += 1
+
+    def constrained_by_domain(self, row, col):
         """The number of variables a given move impacts"""
+        domain = self.get_domain_smart(row, col)
+        constrains = [-1]*len(domain)
+
+        for i in range(domain):
+            counter = [0]
+            self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter)
+            constrains[i] = counter[0]
+
+        return constrains
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
