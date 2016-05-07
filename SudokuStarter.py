@@ -12,10 +12,10 @@ class SudokuBoard:
         self.CurrentGameBoard = board # the current state of the game board
         if not domains:
             # print "first initialization"
-            self.boardDomains = [[range(1, self.BoardSize+1) for x in range(0, size)] for x in range(0, size)]
+            self.boardDomains = [[range(1, self.BoardSize+1) for x in range(size)] for x in range(size)]
             # Set all the board's domains at first
-            for i in range(0, size):
-              for j in range(0, size):
+            for i in range(size):
+              for j in range(size):
                   if board[i][j] != 0:
                       self.updateDomains(i, j)
             # self.print_board()
@@ -71,8 +71,8 @@ class SudokuBoard:
 
     def generateBoardDomains(self):
         """Generates correct domains for every spot in board"""
-        for i in range(0, self.BoardSize):
-            for j in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
+            for j in range(self.BoardSize):
                 if self.CurrentGameBoard[i][j] != 0:
                     continue
                 self.boardDomains[i][j] = self.get_domain(i, j)
@@ -80,20 +80,20 @@ class SudokuBoard:
     def openSpots(self):
         """Finds all locations on board with value 0"""
         openSpots = []
-        for i in range(0, self.BoardSize):
-            for j in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
+            for j in range(self.BoardSize):
                 if not self.CurrentGameBoard[i][j]:
                     openSpots.append((i, j))
         return openSpots
 
     def iterate_unassigned_domains(self, row, col, function, *args):
 
-        for i in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
             if self.boardDomains[row][i] != [None]:
                 function(row, i, *args)
 
         # clear the column
-        for i in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
             if self.boardDomains[i][col] != [None]:
                 function(i, col, *args)
 
@@ -122,8 +122,8 @@ class SudokuBoard:
         return self.iterate_unassigned_domains(row, col, self.count)
 
     def empty_domains(self):
-        for i in range(0, self.BoardSize):
-            for j in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
+            for j in range(self.BoardSize):
                 if not self.boardDomains[i][j]:
                     return True
         return False
@@ -132,8 +132,8 @@ class SudokuBoard:
         """Find the cell with the smallest domain"""
         dom_size = self.BoardSize + 1
         spot = (-1, -1)
-        for i in range(0, self.BoardSize):
-            for j in range(0, self.BoardSize):
+        for i in range(self.BoardSize):
+            for j in range(self.BoardSize):
                 if self.boardDomains[i][j] == [None]:
                     continue
                 if len(self.boardDomains[i][j]) < dom_size:
