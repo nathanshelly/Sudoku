@@ -4,7 +4,7 @@
 import struct, string, math, random, copy
 
 consistency_checks = 0
-max_consistency_checks = 10
+max_consistency_checks = 500,000
 print_timeout = True
 
 class SudokuBoard:
@@ -254,14 +254,18 @@ def solve(initial_board, forward_checking = False, MRV = False, Degree = False,
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
     global print_timeout
+    global consistency_checks
     print_timeout = True
+    consistency_checks = 0
 
-    return backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
+    result = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
+    return result
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     global consistency_checks
     global max_consistency_checks
     global print_timeout
+    # print "Num, consistency_checks" consistency_checks
     if consistency_checks > max_consistency_checks:
         if print_timeout:
             print "timed out"
@@ -294,7 +298,7 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
         if result:
-            return result
+            return result, consistency_checks
 
     # domain is empty or no values worked
     return False
