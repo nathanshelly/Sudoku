@@ -17,7 +17,7 @@ LCVArgsWithMRV =        {'forward_checking': True,  'MRV': True, 'Degree': False
 listArgs = [forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs, LCVArgsWithMRV]
 
 for pathPuzzle in typePuzzle:
-    print 'Running ' + str(pathPuzzle) + ' puzzles '
+    print 'Running ' + str(pathPuzzle) + ' puzzles \n\n'
     resultsFile.write('Running ' + str(pathPuzzle) + ' puzzles ' + '\n')
     for arguments in listArgs:
         print 'Arguments: ' + str(arguments)
