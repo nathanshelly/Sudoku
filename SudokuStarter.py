@@ -69,9 +69,7 @@ class SudokuBoard:
 
     def in_domain(self, r, c, value, counter):
         """Checks if passed in value is in passed in spot's domain"""
-        # print "iterating spot", (r, c)
         if value in self.get_domain_smart(r, c):
-            # print "incrementing on spot", (r, c)
             counter[0] += 1
 
     def constrained_by_domain(self, row, col):
@@ -83,12 +81,7 @@ class SudokuBoard:
             counter_add = [0]
             counter_subtr = [0]
             self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter_add)
-            # self.iterate_unassigned_rc_in_ss(row, col, self.in_domain, domain[i], counter_subtr)
-            # print "counter_add", counter_add#,"counter_subtr", counter_subtr
-            constrains[i] = counter_add[0] #- counter_subtr[0]
-        #
-        # print "my spot", (row, col), "my domain", domain
-        # print "how many things each thing in my domain constrains", constrains
+            constrains[i] = counter_add[0]
 
         return constrains
 
@@ -239,13 +232,7 @@ class SudokuBoard:
     def iterate_unassigned_domains(self, row, col, function, *args):
         """Runs through unassigned domains in given spot's neighborhood"""
         spot_ss_num = self.compute_ss_num(row, col)
-        # print "all spots"
         [function(i, j, *args) for (i, j) in self.open_spots if (i, j) != (row, col) and (i == row or j == col or spot_ss_num == self.compute_ss_num(i, j))]
-    #
-    # def iterate_unassigned_rc_in_ss(self, row, col, function, *args):
-    #     spot_ss_num = self.compute_ss_num(row, col)
-    #     # print "just in ss"
-    #     [function(i, j, *args) for (i, j) in self.open_spots if (i, j) != (row, col) and (i == row or j == col) and spot_ss_num == self.compute_ss_num(i, j)]
 
     def set_value(self, row, col, value):
         """Makes move, updating requisite data members"""
@@ -287,8 +274,6 @@ class SudokuBoard:
         if LCV:
             domainOrder = self.constrained_by_domain(spotToPlay[0], spotToPlay[1])
             domain = [value for (constraint,  value) in sorted(zip(domainOrder, domain))]
-            # print "domain", domain
-            # print
 
         return domain
 
