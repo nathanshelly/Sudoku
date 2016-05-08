@@ -1,6 +1,7 @@
 from SudokuStarter import *
 import os
 
+max_consistency_checks = 3000
 resultsFile = open("results.txt", "w")
 path = 'input_puzzles/more/'
 # path = 'input_puzzles/easy'
@@ -24,18 +25,19 @@ for pathPuzzle in typePuzzle:
         totalConsistencyChecks = 0
         for file in os.listdir(path+pathPuzzle):
             print 'File: ' + str(file)
-            resultsFile.write('File: ' + str(file) + '\n')
+            # resultsFile.write('File: ' + str(file) + '\n')
             tempBoard = init_board(path + pathPuzzle + '/' + file)
             vals = arguments.values()
             winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
             print 'Number of consistency_checks = ' + str(numConsistencyChecks)
-            resultsFile.write('Number of consistency_checks = ' + str(numConsistencyChecks) + '\n')
+            # resultsFile.write('Number of consistency_checks = ' + str(numConsistencyChecks) + '\n')
 
             if winBoard:
                 totalConsistencyChecks += numConsistencyChecks
                 numSuccesses += 1
             else:
-                print 'File ' + str(file) + ' timed out '
+                if numConsistencyChecks > max_consistency_checks:
+                    print 'File ' + str(file) + ' timed out '
                 resultsFile.write('File ' + str(file) + ' timed out ' + '\n')
         print str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5))
         resultsFile.write(str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5)) + '\n')
