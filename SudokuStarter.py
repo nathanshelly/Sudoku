@@ -84,9 +84,9 @@ class SudokuBoard:
             self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter_add)
             self.iterate_unassigned_rc_in_ss(row, col, self.in_domain, domain[i], counter_subtr)
             constrains[i] = counter_add[0] - counter_subtr[0]
-
-        print self.boardDomains
-        print (row, col), constrains
+        #
+        # print self.boardDomains
+        # print (row, col), constrains
 
         return constrains
 
@@ -237,7 +237,11 @@ class SudokuBoard:
     def iterate_unassigned_domains(self, row, col, function, *args):
         """Runs through unassigned domains in given spot's neighborhood"""
         spot_ss_num = self.compute_ss_num(row, col)
-        [function(i, j, *args) for (i, j) in self.open_spots if i == row or j == col or  spot_ss_num == self.compute_ss_num(i, j)]
+        [function(i, j, *args) for (i, j) in self.open_spots if i == row or j == col or spot_ss_num == self.compute_ss_num(i, j)]
+
+    def iterate_unassigned_rc_in_ss(self, row, col, function, *args):
+        spot_ss_num = self.compute_ss_num(row, col)
+        [function(i, j, *args) for (i, j) in self.open_spots if i == row or j == col and spot_ss_num == self.compute_ss_num(i, j)]
 
     def set_value(self, row, col, value):
         """Makes move, updating requisite data members"""

@@ -12,8 +12,9 @@ forwardCheckingArgs =   {'forward_checking': True,  'MRV': False, 'Degree': Fals
 MRVArgs =               {'forward_checking': True,  'MRV': True,  'Degree': False, 'LCV': False}
 DegreeArgs =            {'forward_checking': True,  'MRV': False, 'Degree': True,  'LCV': False}
 LCVArgs =               {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': True}
+LCVArgsWithMRV =        {'forward_checking': True,  'MRV': True, 'Degree': False, 'LCV': True}
 # listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
-listArgs = [forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
+listArgs = [forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs, LCVArgsWithMRV]
 
 for pathPuzzle in typePuzzle:
     print 'Running ' + str(pathPuzzle) + ' puzzles '
