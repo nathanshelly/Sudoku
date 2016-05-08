@@ -5,7 +5,7 @@ import struct, string, math, random, copy
 from collections import deque
 
 # Global check for timing out
-max_consistency_checks = 3000
+max_consistency_checks = 500000
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""

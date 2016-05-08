@@ -1,7 +1,7 @@
 from SudokuStarter import *
 import os
 
-max_consistency_checks = 3000
+max_consistency_checks = 500000
 resultsFile = open("results.txt", "w")
 path = 'input_puzzles/more/'
 # path = 'input_puzzles/easy'
@@ -39,8 +39,8 @@ for pathPuzzle in typePuzzle:
             else:
                 if numConsistencyChecks > max_consistency_checks:
                     print 'File ' + str(file) + ' timed out '
-                resultsFile.write('File ' + str(file) + ' timed out ' + '\n')
+                # resultsFile.write('File ' + str(file) + ' timed out ' + '\n')
         print str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5))
-        resultsFile.write(str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5)) + '\n')
+        resultsFile.write(str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5)) + '\n\n')
 
 resultsFile.close()
