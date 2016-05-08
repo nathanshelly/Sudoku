@@ -23,11 +23,12 @@ for pathPuzzle in typePuzzle:
         totalConsistencyChecks = 0
         for file in os.listdir(path+pathPuzzle):
             print 'File: ' + str(file)
-            resultsFile.write('File: ' + str(file) + '\n')
+            # resultsFile.write('File: ' + str(file) + '\n')
             tempBoard = init_board(path + pathPuzzle + '/' + file)
             vals = arguments.values()
+
             winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
-            print 'Number of consistency_checks = ' + str(numConsistencyChecks)
+            print 'Number of consistency checks: ' + str(numConsistencyChecks)
             resultsFile.write('Number of consistency_checks = ' + str(numConsistencyChecks) + '\n')
 
             if winBoard:
