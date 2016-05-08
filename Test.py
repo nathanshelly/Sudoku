@@ -31,10 +31,11 @@ path = 'input_puzzles/more/9x9'
 
 
 resultsFile = open("results.txt", "w")
+reps = 1
 
 acc = 0
-for i in range(0, 100):
-    tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
+for i in range(reps):
+    tempBoard = init_board('input_puzzles/more/16x16/16x16.9.sudoku')
     startTime = time.clock()
     winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = False)
     endTime = time.clock()
@@ -48,4 +49,4 @@ for i in range(0, 100):
         # resultsFile.write(str(is_complete(winBoard)))
 
 resultsFile.close()
-print "Ten boards, average time was: " + str(round(acc/10.0, 5))
+print str(reps) + " boards, average time was: " + str(round(acc/float(reps), 5))
