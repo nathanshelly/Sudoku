@@ -52,6 +52,5 @@ Temporary Items
 # fucking annoying results file
 results.txt
 
-# removed testing scripts etc. for publication
-*Test.py
-*.xlsx
+# only the stuff we want for publication
+*.pdf
