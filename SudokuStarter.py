@@ -76,6 +76,13 @@ class SudokuBoard:
         self.num_in_cols[col] += 1
         self.num_in_ss[self.compute_ss_num(row, col)] += 1
 
+    def unset_value(self, row, col):
+        self.open_spots.append((row, col))
+        self.add_to_domains(row, col)
+        self.remove_from_placed(row, col)
+        self.CurrentGameBoard[row][col] = 0
+        # Give me back a domain (my current one is [None])
+
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
         value placed on the GameBoard row and col are both zero-indexed"""
@@ -89,6 +96,9 @@ class SudokuBoard:
 
         #return a new board of the same size with the value added
         return SudokuBoard(self.BoardSize, self.CurrentGameBoard, info)
+
+    def add_to_domains(row, col):
+        self.
 
     def print_board(self):
         """Prints the current game board. Leaves unassigned spots blank."""
@@ -349,8 +359,11 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
 
         tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
+
         if result:
             return result, consistency_checks
+        else:
+            tempBoard.unset_value(move_queue.pop())
 
     # domain is empty or no values worked
     return False
