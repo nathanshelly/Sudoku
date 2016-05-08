@@ -1,4 +1,4 @@
-from SudokuStarter import *
+from sudoku import *
 import os
 
 max_consistency_checks = 500000
@@ -11,7 +11,6 @@ MRVArgs =               {'forward_checking': True,  'MRV': True,  'Degree': Fals
 DegreeArgs =            {'forward_checking': True,  'MRV': False, 'Degree': True,  'LCV': False}
 LCVArgs =               {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': True}
 listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
-# listArgs = [forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs, LCVArgsWithMRV]
 
 for pathPuzzle in typePuzzle:
     print 'Running ' + str(pathPuzzle) + ' puzzles'
@@ -25,8 +24,16 @@ for pathPuzzle in typePuzzle:
             print 'File: ' + str(file)
             tempBoard = init_board(path + pathPuzzle + '/' + file)
             vals = arguments.values()
-            winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
-            print 'Number of consistency_checks = ' + str(numConsistencyChecks)
+
+            # Use for solving without tracking consistency checks
+
+            winBoard = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
+            numConsistencyChecks = 0
+
+            # Use for solving with tracking consistency checks, in solve function in sudoku.py also change return to return tuple of board and consistency_checks
+
+            # winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
+            # print 'Number of consistency_checks = ' + str(numConsistencyChecks)
 
             if winBoard:
                 totalConsistencyChecks += numConsistencyChecks
