@@ -1,3 +1,0 @@
-Running 9x9 puzzles 
-Running with arguments: {'LCV': False, 'MRV': False, 'Degree': False, 'forward_checking': False}
-Number of consistency_checks = 558

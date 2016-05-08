@@ -4,15 +4,14 @@ import os
 resultsFile = open("results.txt", "w")
 path = 'input_puzzles/more/'
 # path = 'input_puzzles/easy'
-# typePuzzle = ['9x9', '16x16', '25x25']
-typePuzzle = ['25x25']
+typePuzzle = ['9x9', '16x16', '25x25']
 backtrackingArgs =      {'forward_checking': False, 'MRV': False, 'Degree': False, 'LCV': False}
 forwardCheckingArgs =   {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': False}
 MRVArgs =               {'forward_checking': True,  'MRV': True,  'Degree': False, 'LCV': False}
 DegreeArgs =            {'forward_checking': True,  'MRV': False, 'Degree': True,  'LCV': False}
 LCVArgs =               {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': True}
-listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
-# listArgs = [MRVArgs, DegreeArgs, LCVArgs]
+# listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
+listArgs = [MRVArgs]
 
 for pathPuzzle in typePuzzle:
     print 'Running ' + str(pathPuzzle) + ' puzzles '
@@ -24,12 +23,11 @@ for pathPuzzle in typePuzzle:
         totalConsistencyChecks = 0
         for file in os.listdir(path+pathPuzzle):
             print 'File: ' + str(file)
-            # resultsFile.write('File: ' + str(file) + '\n')
+            resultsFile.write('File: ' + str(file) + '\n')
             tempBoard = init_board(path + pathPuzzle + '/' + file)
             vals = arguments.values()
-
             winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
-            print 'Number of consistency checks: ' + str(numConsistencyChecks)
+            print 'Number of consistency_checks = ' + str(numConsistencyChecks)
             resultsFile.write('Number of consistency_checks = ' + str(numConsistencyChecks) + '\n')
 
             if winBoard:
