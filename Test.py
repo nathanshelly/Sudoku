@@ -31,24 +31,18 @@ path = 'input_puzzles/more/9x9'
 
 
 resultsFile = open("results.txt", "w")
-reps = 1
+reps = 100
+totalConsistencyChecks = 0
 
-acc = 0
 for i in range(reps):
     tempBoard = init_board('input_puzzles/easy/4_4.sudoku')
-    tempBoard.print_board()
 
-    startTime = time.clock()
-    winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = True)
-    endTime = time.clock()
+    winBoard, numConsistencyChecks = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = True)
 
     if winBoard:
-        totalTime = endTime - startTime
-        acc += totalTime
-        print "Board " + str(i) + " took " + str(round(totalTime, 3)) + " seconds to complete"
-        # winBoard.print_board()
-        # print is_complete(winBoard)
-        # resultsFile.write(str(is_complete(winBoard)))
+        totalConsistencyChecks += numConsistencyChecks
+        print "Board " + str(i) + " took " + str(numConsistencyChecks) + " checks to complete"
 
 resultsFile.close()
-print str(reps) + " boards, average time was: " + str(round(acc/float(reps), 5))
+print totalConsistencyChecks
+print str(reps) + " boards, average checks was: " + str(round(totalConsistencyChecks/float(reps), 5))

@@ -34,7 +34,7 @@ for pathPuzzle in typePuzzle:
             else:
                 if numConsistencyChecks > max_consistency_checks:
                     print 'File ' + str(file) + ' timed out '
-                    
+
         print str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5))
         resultsFile.write(str(numSuccesses) + " boards succeeded, average number of consistency checks was: " + str(round(totalConsistencyChecks/numSuccesses, 5)) + '\n\n')
 
