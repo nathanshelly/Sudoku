@@ -31,15 +31,15 @@ path = 'input_puzzles/more/9x9'
 
 
 resultsFile = open("results.txt", "w")
-reps = 10
+reps = 1
 
 acc = 0
 for i in range(reps):
-    tempBoard = init_board('input_puzzles/easy/9_9.sudoku')
+    tempBoard = init_board('input_puzzles/easy/4_4.sudoku')
     tempBoard.print_board()
 
     startTime = time.clock()
-    winBoard = solve(tempBoard, forward_checking = True, MRV = True, Degree = False, LCV = False)
+    winBoard = solve(tempBoard, forward_checking = True, MRV = False, Degree = False, LCV = True)
     endTime = time.clock()
 
     if winBoard:
