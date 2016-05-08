@@ -6,7 +6,6 @@ from collections import deque
 
 # Global check for timing out
 max_consistency_checks = 3000
-print_timeout = True
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
@@ -253,6 +252,30 @@ class SudokuBoard:
         """Iterates unassigned domains to reset their domains"""
         self.iterate_unassigned_domains(row, col, self.set_domain)
 
+    def getSpotToPlay(self, MRV, Degree):
+        """Finds our spot to play next"""
+        if MRV:
+            spotToPlay = self.min_domain()
+        elif Degree:
+            spotToPlay = self.getDegreeSpot()
+        else:
+            spotToPlay = random.choice(self.open_spots)
+
+        return spotToPlay
+
+    def getSpotToPlayDomain(self, spotToPlay, forward_checking, LCV):
+        """Get's domain of our spot in correct order"""
+        if forward_checking:
+            domain = self.get_domain_smart(spotToPlay[0], spotToPlay[1])
+        else:
+            domain = range(1, self.BoardSize+1)
+
+        if LCV:
+            domainOrder = self.constrained_by_domain(spotToPlay[0], spotToPlay[1])
+            domain = [value for (constraint,  value) in sorted(zip(domainOrder, domain))]
+
+        return domain
+
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -316,8 +339,6 @@ def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_check
     """Takes an initial SudokuBoard and solves it using back tracking, and zero
     or more of the heuristics and constraint propagation methods (determined by
     arguments). Returns the resulting board solution. """
-    global print_timeout
-    print_timeout = True
     move_queue = deque()
 
     consistency_checks = [0]
@@ -329,34 +350,17 @@ def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_check
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue, numConsistencyChecks):
     global max_consistency_checks
-    global print_timeout
-
     if is_complete(pBoard):
         return pBoard
     if pBoard.empty_domains():
         return False
 
-    if MRV:
-        spotToPlay = pBoard.min_domain()
-    elif Degree:
-        spotToPlay = pBoard.getDegreeSpot()
-    else:
-        spotToPlay = random.choice(pBoard.open_spots)
-
-    if forward_checking:
-        domain = pBoard.get_domain_smart(spotToPlay[0], spotToPlay[1])
-    else:
-        domain = range(1, pBoard.BoardSize+1)
-
-    if LCV:
-        domainOrder = pBoard.constrained_by_domain(spotToPlay[0], spotToPlay[1])
-        domain = [value for (constraint,  value) in sorted(zip(domainOrder, domain))]
+    # Determine the spot to make our next move, and get that spot's domain in the correct order
+    spotToPlay = pBoard.getSpotToPlay(MRV, Degree)
+    domain = pBoard.getSpotToPlayDomain(spotToPlay, forward_checking, LCV)
 
     for value in domain:
         if numConsistencyChecks[0] > max_consistency_checks:
-            if print_timeout:
-                print "Timed out"
-                print_timeout = False
             return False
         numConsistencyChecks[0] += 1
 
@@ -364,8 +368,10 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue, n
             if not pBoard.check_consistency(spotToPlay[0], spotToPlay[1], value):
                 continue
 
+        # append move to our queue of all moves
         move_queue.append((spotToPlay[0], spotToPlay[1]))
-        pBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
+        # set a value for that spot and update domains
+        pBoard.set_value(spotToPlay[0], spotToPlay[1], value)
         resultingBoard = backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue, numConsistencyChecks)
 
         if resultingBoard:
@@ -373,7 +379,4 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue, n
         else:
             pBoard.unset_value(*move_queue.pop())
 
-    # domain is empty or no values worked
-    # print domain
-    # pBoard.print_board()
     return False
