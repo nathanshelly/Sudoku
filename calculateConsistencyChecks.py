@@ -30,7 +30,7 @@ for pathPuzzle in typePuzzle:
             winBoard = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
             numConsistencyChecks = 0
 
-            # Use for solving with tracking consistency checks
+            # Use for solving with tracking consistency checks, in solve function in sudoku.py also change return to return tuple of board and consistency_checks
 
             # winBoard, numConsistencyChecks = solve(tempBoard, vals[0], vals[1], vals[2], vals[3])
             # print 'Number of consistency_checks = ' + str(numConsistencyChecks)
