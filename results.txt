@@ -1,0 +1,23 @@
+Running 9x9 puzzles 
+Running with arguments: {'LCV': False, 'MRV': False, 'Degree': False, 'forward_checking': True}
+File 9x9.11.sudoku timed out
+File 9x9.12.sudoku timed out
+File 9x9.15.sudoku timed out
+File 9x9.18.sudoku timed out
+File 9x9.2.sudoku timed out
+File 9x9.20.sudoku timed out
+File 9x9.6.sudoku timed out
+File 9x9.8.sudoku timed out
+12 boards succeeded, average number of consistency checks was: 328.0
+Running with arguments: {'LCV': False, 'MRV': True, 'Degree': False, 'forward_checking': True}
+20 boards succeeded, average number of consistency checks was: 53.0
+Running with arguments: {'LCV': False, 'MRV': False, 'Degree': True, 'forward_checking': True}
+20 boards succeeded, average number of consistency checks was: 116.0
+Running with arguments: {'LCV': True, 'MRV': False, 'Degree': False, 'forward_checking': True}
+File 9x9.10.sudoku timed out
+File 9x9.11.sudoku timed out
+File 9x9.15.sudoku timed out
+File 9x9.18.sudoku timed out
+File 9x9.2.sudoku timed out
+File 9x9.20.sudoku timed out
+14 boards succeeded, average number of consistency checks was: 320.0
