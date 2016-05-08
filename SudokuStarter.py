@@ -87,9 +87,14 @@ class SudokuBoard:
         constrains = [-1]*len(domain)
 
         for i in range(len(domain)):
-            counter = [0]
-            self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter)
-            constrains[i] = counter[0]
+            counter_add = [0]
+            counter_subtr = [0]
+            self.iterate_unassigned_domains(row, col, self.in_domain, domain[i], counter_add)
+            self.iterate_unassigned_rc_in_ss(row, col, self.in_domain, domain[i], counter_subtr)
+            constrains[i] = counter_add[0] - counter_subtr[0]
+
+        print self.boardDomains
+        print (row, col), constrains
 
         return constrains
 
@@ -230,25 +235,12 @@ class SudokuBoard:
 
     def iterate_unassigned_domains(self, row, col, function, *args):
 
-        for i in range(self.BoardSize):
-            # print self.boardDomains
-            if self.boardDomains[row][i] != [None]:
-                function(row, i, *args)
+        ss_num = self.compute_ss_num(row, col)
+        [function(i, j, *args) for (i, j) in self.open_spots if i == row or j == col or self.compute_ss_num(i, j) == ss_num]
 
-        # clear the column
-        for i in range(self.BoardSize):
-            if self.boardDomains[i][col] != [None]:
-                function(i, col, *args)
-
-        # clear the subsquare
-        num_sss = int(math.sqrt(self.BoardSize))
-        ss_row_start = row/num_sss * num_sss
-        ss_col_start = (col/num_sss) * num_sss
-        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
-            for i in [x for x in range(ss_row_start, ss_row_start+num_sss) if x != col]:
-                if self.boardDomains[i][j] != [None]:
-                    # print 'Hitting in in iterate_unassigned_domains:', (i, j)
-                    function(i, j, *args)
+    def iterate_unassigned_rc_in_ss(self, row, col, function, *args):
+        ss_num = self.compute_ss_num(row, col)
+        [function(i, j, *args) for (i, j) in self.open_spots if i == row or j == col and self.compute_ss_num(i, j) == ss_num]
 
     def set_value(self, row, col, value):
         """This function will create a new sudoku board object with the input
@@ -267,7 +259,7 @@ class SudokuBoard:
         self.open_spots.append((row, col))
 
         self.set_domains_back(row, col)
-        # self.decrement_placed(row, col)
+        self.decrement_placed(row, col)
 
     def set_domains_back(self, row, col):
         self.iterate_unassigned_domains(row, col, self.set_domain)
