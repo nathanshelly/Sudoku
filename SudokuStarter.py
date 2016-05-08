@@ -2,6 +2,7 @@
 # All group members were present and contributing during all work on this project
 
 import struct, string, math, random, copy
+from collections import deque
 
 consistency_checks = 0
 max_consistency_checks = 500000
@@ -21,7 +22,7 @@ class SudokuBoard:
             self.num_in_ss = self.placed_in_ss()
             self.open_spots = [(i, j) for i in range(size) for j in range(size) if board[i][j] == 0]
             self.boardDomains = [[range(1, self.BoardSize+1) for x in range(size)] for x in range(size)]
-            [self.updateDomains(i, j) for i in range(size) for j in range(size) if board[i][j] != 0]
+            [self.remove_from_domains(i, j) for i in range(size) for j in range(size) if board[i][j] != 0]
         else:
             self.num_in_rows = info["num_in_rows"]
             self.num_in_cols = info["num_in_cols"]
@@ -29,165 +30,20 @@ class SudokuBoard:
             self.open_spots  = info["open_spots"]
             self.boardDomains = info["domains"]
 
-    def placed_in_rows(self):
-        """Calculates the number of placed variables in each row"""
-        num_placed = [-1]*self.BoardSize
-        for i in range(self.BoardSize): # go down the rows
-            num = 0
-            for j in range(self.BoardSize): # go across the rows
-                if self.CurrentGameBoard[i][j] != 0:
-                    num += 1
-            num_placed[i] = num
-        return num_placed
+    def remove_from_domains(self, row, col):
+        self.boardDomains[row][col] = [None]
+        value = self.CurrentGameBoard[row][col]
 
-    def placed_in_cols(self):
-        """Calculates the number of placed variables in each column"""
-        num_placed = [-1]*self.BoardSize
-        for i in range(self.BoardSize): # go across the cols
-            num = 0
-            for j in range(self.BoardSize): # go down a col
-                if self.CurrentGameBoard[j][i] != 0:
-                    num += 1
-            num_placed[i] = num
-        return num_placed
+        self.iterate_unassigned_domains(row, col, self.remove_val, value)
 
-    def placed_in_ss(self):
-        """Calculates the number of placed variables in each spots subsquare"""
-        num_placed = []
-        num_ss = int(math.sqrt(self.BoardSize))
-        for k in range(self.BoardSize): # for each subsquare
-            num = 0
-            ss_row_num = k//num_ss
-            for i in range(ss_row_num*num_ss, (ss_row_num+1)*num_ss):
-                ss_col_num = k % num_ss
-                for j in range(ss_col_num*num_ss, (ss_col_num+1)*num_ss):
-                    if self.CurrentGameBoard[i][j] != 0:
-                        num += 1
-            num_placed.append(num)
-        return num_placed
-
-    def compute_ss_num(self, row, col):
-        num_ss = int(math.sqrt(self.BoardSize))
-        return (col//num_ss) + (row//num_ss) * num_ss
-
-    def update_placed(self, row, col):
-        """Update the number of placed variables in rows, columns, and ss's"""
-        self.num_in_rows[row] += 1
-        self.num_in_cols[col] += 1
-        self.num_in_ss[self.compute_ss_num(row, col)] += 1
-
-    def unset_value(self, row, col):
-        self.open_spots.append((row, col))
-        self.add_to_domains(row, col)
-        self.remove_from_placed(row, col)
-        self.CurrentGameBoard[row][col] = 0
-        # Give me back a domain (my current one is [None])
-
-    def set_value(self, row, col, value):
-        """This function will create a new sudoku board object with the input
-        value placed on the GameBoard row and col are both zero-indexed"""
-
-        self.CurrentGameBoard[row][col]=value
-        self.open_spots.remove((row, col))
-        self.updateDomains(row, col)
-        self.update_placed(row, col)
-
-        info = {"domains":self.boardDomains, "open_spots":self.open_spots, "num_in_rows":self.num_in_rows, "num_in_cols":self.num_in_cols, "num_in_ss":self.num_in_ss}
-
-        #return a new board of the same size with the value added
-        return SudokuBoard(self.BoardSize, self.CurrentGameBoard, info)
-
-    def add_to_domains(row, col):
-        self.
-
-    def print_board(self):
-        """Prints the current game board. Leaves unassigned spots blank."""
-        div = int(math.sqrt(self.BoardSize))
-        dash = ""
-        space = ""
-        line = "+"
-        sep = "|"
-        for i in range(div):
-            dash += "----"
-            space += "    "
-        for i in range(div):
-            line += dash + "+"
-            sep += space + "|"
-        for i in range(-1, self.BoardSize):
-            if i != -1:
-                print "|",
-                for j in range(self.BoardSize):
-                    if self.CurrentGameBoard[i][j] > 9:
-                        print self.CurrentGameBoard[i][j],
-                    elif self.CurrentGameBoard[i][j] > 0:
-                        print "", self.CurrentGameBoard[i][j],
-                    else:
-                        print "  ",
-                    if (j+1 != self.BoardSize):
-                        if ((j+1)//div != j/div):
-                            print "|",
-                        else:
-                            print "",
-                    else:
-                        print "|"
-            if ((i+1)//div != i/div):
-                print line
-            else:
-                print sep
-
-    def get_domain_smart(self, row, col):
-        return self.boardDomains[row][col]
-
-    def generateBoardDomains(self):
-        """Generates correct domains for every spot in board"""
-        for i in range(self.BoardSize):
-            for j in range(self.BoardSize):
-                if self.CurrentGameBoard[i][j] != 0:
-                    continue
-                self.boardDomains[i][j] = self.get_domain(i, j)
-
-    def iterate_unassigned_domains(self, row, col, function, *args):
-
-        for i in range(self.BoardSize):
-            if self.boardDomains[row][i] != [None]:
-                function(row, i, *args)
-
-        # clear the column
-        for i in range(self.BoardSize):
-            if self.boardDomains[i][col] != [None]:
-                function(i, col, *args)
-
-        # clear the subsquare
-        num_sss = int(math.sqrt(self.BoardSize))
-        ss_row_start = row/num_sss * num_sss
-        ss_col_start = (col/num_sss) * num_sss
-        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
-            for i in [x for x in range(ss_row_start, ss_row_start+num_sss) if x != col]:
-                if self.CurrentGameBoard[i][j] != [None]:
-                    function(i, j, *args)
+    def set_domain(self, r, c):
+        self.boardDomains[r][c] = self.get_domain_dumb(r, c)
 
     def remove_val(self, r, c, value):
         try:
             self.boardDomains[r][c].remove(value)
         except ValueError:
             pass
-
-    def updateDomains(self, row, col):
-        self.boardDomains[row][col] = [None]
-        value = self.CurrentGameBoard[row][col]
-
-        self.iterate_unassigned_domains(row, col, self.remove_val, value)
-
-    def getDegreeSpot(self):
-        num = -1
-        spot = (-1, -1)
-        for i, j in self.open_spots:
-                ss_num = self.compute_ss_num(i, j)
-                temp_num = sum([self.num_in_rows[i], self.num_in_cols[j], self.num_in_ss[ss_num]])
-                if temp_num > num:
-                    num = temp_num
-                    spot = (i, j)
-        return spot
 
     def incrementUnassigned(self, row, col, inOut):
         if self.boardDomains[row][col] != [None]:
@@ -241,6 +97,181 @@ class SudokuBoard:
         if value not in self.boardDomains[row][col]:
             return False
         return True
+
+    ##################### Degree #####################
+
+    def placed_in_rows(self):
+        """Calculates the number of placed variables in each row"""
+        num_placed = [-1]*self.BoardSize
+        for i in range(self.BoardSize): # go down the rows
+            num = 0
+            for j in range(self.BoardSize): # go across the rows
+                if self.CurrentGameBoard[i][j] != 0:
+                    num += 1
+            num_placed[i] = num
+        return num_placed
+
+    def placed_in_cols(self):
+        """Calculates the number of placed variables in each column"""
+        num_placed = [-1]*self.BoardSize
+        for i in range(self.BoardSize): # go across the cols
+            num = 0
+            for j in range(self.BoardSize): # go down a col
+                if self.CurrentGameBoard[j][i] != 0:
+                    num += 1
+            num_placed[i] = num
+        return num_placed
+
+    def placed_in_ss(self):
+        """Calculates the number of placed variables in each spots subsquare"""
+        num_placed = []
+        num_ss = int(math.sqrt(self.BoardSize))
+        for k in range(self.BoardSize): # for each subsquare
+            num = 0
+            ss_row_num = k//num_ss
+            for i in range(ss_row_num*num_ss, (ss_row_num+1)*num_ss):
+                ss_col_num = k % num_ss
+                for j in range(ss_col_num*num_ss, (ss_col_num+1)*num_ss):
+                    if self.CurrentGameBoard[i][j] != 0:
+                        num += 1
+            num_placed.append(num)
+        return num_placed
+
+    def increment_placed(self, row, col):
+        """Update the number of placed variables in rows, columns, and ss's"""
+        self.num_in_rows[row] += 1
+        self.num_in_cols[col] += 1
+        self.num_in_ss[self.compute_ss_num(row, col)] += 1
+
+    def decrement_placed(self, row, col):
+        self.num_in_rows[row] -= 1
+        self.num_in_cols[col] -= 1
+        self.num_in_ss[self.compute_ss_num(row, col)] -= 1
+
+    def getDegreeSpot(self):
+        num = -1
+        spot = (-1, -1)
+        for i, j in self.open_spots:
+                ss_num = self.compute_ss_num(i, j)
+                temp_num = sum([self.num_in_rows[i], self.num_in_cols[j], self.num_in_ss[ss_num]])
+                if temp_num > num:
+                    num = temp_num
+                    spot = (i, j)
+        return spot
+
+    ##################### Get domains #####################
+
+    def get_domain_smart(self, row, col):
+        return self.boardDomains[row][col]
+
+    def get_domain_dumb(self, row, col):
+        rowDomain = set(self.get_row_domain(row, col))
+        colDomain = set(self.get_col_domain(row, col))
+        subsquareDomain = set(self.get_subsquare_domain(row, col))
+
+        return list(set.intersection(rowDomain, colDomain, subsquareDomain))
+
+    def get_row_domain(self, row, col):
+        assignedValues = [self.CurrentGameBoard[row][x] for x in range(self.BoardSize) if self.CurrentGameBoard[row][x] != 0 and x != col]
+        return [val for val in range(1, self.BoardSize + 1) if val not in assignedValues]
+
+    def get_col_domain(self, row, col):
+        assignedValues = [self.CurrentGameBoard[x][col] for x in range(self.BoardSize) if self.CurrentGameBoard[x][col] != 0 and x != row]
+        return [val for val in range(1, self.BoardSize + 1) if val not in assignedValues]
+
+    def get_subsquare_domain(self, row, col):
+        num_ss = int(math.sqrt(self.BoardSize))
+        rowSpot = (row // num_ss) * num_ss
+        colSpot = (col // num_ss) * num_ss
+
+        assignedValues = [self.CurrentGameBoard[x][y] for x in range(rowSpot, rowSpot+num_ss) for y in range(colSpot, colSpot+num_ss) if self.CurrentGameBoard[x][y] != 0 and (x, y) != (row, col)]
+        return [val for val in range(1, self.BoardSize + 1) if val not in assignedValues]
+
+    ##################### Utilities #####################
+
+    def print_board(self):
+        """Prints the current game board. Leaves unassigned spots blank."""
+        div = int(math.sqrt(self.BoardSize))
+        dash = ""
+        space = ""
+        line = "+"
+        sep = "|"
+        for i in range(div):
+            dash += "----"
+            space += "    "
+        for i in range(div):
+            line += dash + "+"
+            sep += space + "|"
+        for i in range(-1, self.BoardSize):
+            if i != -1:
+                print "|",
+                for j in range(self.BoardSize):
+                    if self.CurrentGameBoard[i][j] > 9:
+                        print self.CurrentGameBoard[i][j],
+                    elif self.CurrentGameBoard[i][j] > 0:
+                        print "", self.CurrentGameBoard[i][j],
+                    else:
+                        print "  ",
+                    if (j+1 != self.BoardSize):
+                        if ((j+1)//div != j/div):
+                            print "|",
+                        else:
+                            print "",
+                    else:
+                        print "|"
+            if ((i+1)//div != i/div):
+                print line
+            else:
+                print sep
+
+    def compute_ss_num(self, row, col):
+        num_ss = int(math.sqrt(self.BoardSize))
+        return (col//num_ss) + (row//num_ss) * num_ss
+
+    def iterate_unassigned_domains(self, row, col, function, *args):
+
+        for i in range(self.BoardSize):
+            # print self.boardDomains
+            if self.boardDomains[row][i] != [None]:
+                function(row, i, *args)
+
+        # clear the column
+        for i in range(self.BoardSize):
+            if self.boardDomains[i][col] != [None]:
+                function(i, col, *args)
+
+        # clear the subsquare
+        num_sss = int(math.sqrt(self.BoardSize))
+        ss_row_start = row/num_sss * num_sss
+        ss_col_start = (col/num_sss) * num_sss
+        for j in [x for x in range(ss_col_start, ss_col_start+num_sss) if x != row]:
+            for i in [x for x in range(ss_row_start, ss_row_start+num_sss) if x != col]:
+                if self.boardDomains[i][j] != [None]:
+                    # print 'Hitting in in iterate_unassigned_domains:', (i, j)
+                    function(i, j, *args)
+
+    def set_value(self, row, col, value):
+        """This function will create a new sudoku board object with the input
+        value placed on the GameBoard row and col are both zero-indexed"""
+
+        self.CurrentGameBoard[row][col]=value
+        self.open_spots.remove((row, col))
+        self.remove_from_domains(row, col)
+        self.increment_placed(row, col)
+
+        info = {"domains":self.boardDomains, "open_spots":self.open_spots, "num_in_rows":self.num_in_rows, "num_in_cols":self.num_in_cols, "num_in_ss":self.num_in_ss}
+
+    def unset_value(self, row, col):
+        self.CurrentGameBoard[row][col] = 0
+        self.boardDomains[row][col] = self.get_domain_dumb(row, col)
+        self.open_spots.append((row, col))
+
+        self.set_domains_back(row, col)
+        # self.decrement_placed(row, col)
+
+    def set_domains_back(self, row, col):
+        self.iterate_unassigned_domains(row, col, self.set_domain)
+
 
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
@@ -310,14 +341,16 @@ def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_check
     print_timeout = True
     consistency_checks = 0
 
-
     args = {'forward_checking': forward_checking, 'MRV': MRV, 'Degree': Degree, 'LCV': LCV}
     # print 'Solve arguments ' + str(args)
 
-    result = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV)
-    return result
+    move_queue = deque()
+    board = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV, move_queue)
 
-def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
+    print consistency_checks
+    return (board, consistency_checks)
+
+def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
     global consistency_checks
     global max_consistency_checks
     global print_timeout
@@ -325,6 +358,7 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
     if is_complete(pBoard):
         return pBoard
     if pBoard.empty_domains():
+        # print 'Short circuit'
         return False
 
     if MRV:
@@ -351,19 +385,26 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV):
             return False
         consistency_checks += 1
 
-        tempBoard = copy.deepcopy(pBoard)
-
         if not forward_checking:
-            if not tempBoard.check_consistency(spotToPlay[0], spotToPlay[1], value):
+            if not pBoard.check_consistency(spotToPlay[0], spotToPlay[1], value):
                 continue
 
-        tempBoard = tempBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
-        result = backtrackingSearch(tempBoard, forward_checking, MRV, Degree, LCV)
+        # print 'Value:', value
+        # print 'Spot to play: ', spotToPlay
+        # print 'Open spots: ', pBoard.open_spots
+        # print 'Domains: ', pBoard.boardDomains
+        # pBoard.print_board()
+        # print
 
-        if result:
-            return result, consistency_checks
+        move_queue.append((spotToPlay[0], spotToPlay[1]))
+        pBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
+        resultingBoard = backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue)
+
+        if resultingBoard:
+            return resultingBoard
         else:
-            tempBoard.unset_value(move_queue.pop())
+            # pass tuple
+            pBoard.unset_value(*move_queue.pop())
 
     # domain is empty or no values worked
     return False

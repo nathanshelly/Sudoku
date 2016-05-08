@@ -1,0 +1,172 @@
+Running 9x9 puzzles 
+Running with arguments: {'LCV': False, 'MRV': True, 'Degree': False, 'forward_checking': True}
+File: 9x9.1.sudoku
+Number of consistency_checks = 39
+File: 9x9.10.sudoku
+Number of consistency_checks = 47
+File: 9x9.11.sudoku
+Number of consistency_checks = 47
+File: 9x9.12.sudoku
+Number of consistency_checks = 49
+File: 9x9.13.sudoku
+Number of consistency_checks = 43
+File: 9x9.14.sudoku
+Number of consistency_checks = 43
+File: 9x9.15.sudoku
+Number of consistency_checks = 46
+File: 9x9.16.sudoku
+Number of consistency_checks = 40
+File: 9x9.17.sudoku
+Number of consistency_checks = 41
+File: 9x9.18.sudoku
+Number of consistency_checks = 75
+File: 9x9.19.sudoku
+Number of consistency_checks = 43
+File: 9x9.2.sudoku
+Number of consistency_checks = 57
+File: 9x9.20.sudoku
+Number of consistency_checks = 365
+File: 9x9.3.sudoku
+Number of consistency_checks = 37
+File: 9x9.4.sudoku
+Number of consistency_checks = 45
+File: 9x9.5.sudoku
+Number of consistency_checks = 34
+File: 9x9.6.sudoku
+Number of consistency_checks = 62
+File: 9x9.7.sudoku
+Number of consistency_checks = 43
+File: 9x9.8.sudoku
+Number of consistency_checks = 43
+File: 9x9.9.sudoku
+Number of consistency_checks = 48
+20 boards succeeded, average number of consistency checks was: 62.0
+Running 16x16 puzzles 
+Running with arguments: {'LCV': False, 'MRV': True, 'Degree': False, 'forward_checking': True}
+File: 16x16.1.sudoku
+Number of consistency_checks = 115
+File: 16x16.10.sudoku
+Number of consistency_checks = 2662
+File: 16x16.11.sudoku
+Number of consistency_checks = 106
+File: 16x16.12.sudoku
+Number of consistency_checks = 8740
+File: 16x16.13.sudoku
+Number of consistency_checks = 111
+File: 16x16.14.sudoku
+Number of consistency_checks = 858
+File: 16x16.15.sudoku
+Number of consistency_checks = 23305
+File: 16x16.16.sudoku
+Number of consistency_checks = 500001
+File 16x16.16.sudoku timed out 
+File: 16x16.17.sudoku
+Number of consistency_checks = 104
+File: 16x16.18.sudoku
+Number of consistency_checks = 1201
+File: 16x16.19.sudoku
+Number of consistency_checks = 754
+File: 16x16.2.sudoku
+x9.20.sudoku
+Number of consistency_checks = 365
+File: 9x9.3.sudoku
+Number of consistency_checks = 37
+File: 9x9.4.sudoku
+Number of consistency_checks = 45
+File: 9x9.5.sudoku
+Number of consistency_checks = 34
+File: 9x9.6.sudoku
+Number of consistency_checks = 62
+File: 9x9.7.sudoku
+Number of consistency_checks = 43
+File: 9x9.8.sudoku
+Number of consistency_checks = 43
+File: 9x9.9.sudoku
+Number of consistency_checks = 48
+20 boards succeeded, average number of consistency checks was: 62.0
+Running with arguments: {'LCV': False, 'MRV': False, 'Degree': True, 'forward_checking': True}
+File: 9x9.1.sudoku
+Number of consistency_checks = 39
+File: 9x9.10.sudoku
+Number of consistency_checks = 484
+File: 9x9.11.sudoku
+Number of consistency_checks = 83
+File: 9x9.12.sudoku
+Number of consistency_checks = 50
+File: 9x9.13.sudoku
+Number of consistency_checks = 54
+File: 9x9.14.sudoku
+Number of consistency_checks = 44
+File: 9x9.15.sudoku
+Number of consistency_checks = 80
+File: 9x9.16.sudoku
+Number of consistency_checks = 59
+File: 9x9.17.sudoku
+Number of consistency_checks = 43
+File: 9x9.18.sudoku
+Number of consistency_checks = 691
+File: 9x9.19.sudoku
+Number of consistency_checks = 62
+File: 9x9.2.sudoku
+Number of consistency_checks = 789
+File: 9x9.20.sudoku
+Number of consistency_checks = 1243
+File: 9x9.3.sudoku
+Number of consistency_checks = 37
+File: 9x9.4.sudoku
+Number of consistency_checks = 106
+File: 9x9.5.sudoku
+Number of consistency_checks = 41
+File: 9x9.6.sudoku
+Number of consistency_checks = 71
+File: 9x9.7.sudoku
+Number of consistency_checks = 48
+File: 9x9.8.sudoku
+Number of consistency_checks = 62
+File: 9x9.9.sudoku
+Number of consistency_checks = 47
+20 boards succeeded, average number of consistency checks was: 206.0
+Running with arguments: {'LCV': True, 'MRV': False, 'Degree': False, 'forward_checking': True}
+File: 9x9.1.sudoku
+Number of consistency_checks = 44
+File: 9x9.10.sudoku
+Number of consistency_checks = 11081
+File 9x9.10.sudoku timed out 
+File: 9x9.11.sudoku
+Number of consistency_checks = 3499
+File: 9x9.12.sudoku
+Number of consistency_checks = 2629
+File: 9x9.13.sudoku
+Number of consistency_checks = 290
+File: 9x9.14.sudoku
+Number of consistency_checks = 82
+File: 9x9.15.sudoku
+Number of consistency_checks = 4890
+File: 9x9.16.sudoku
+Number of consistency_checks = 43
+File: 9x9.17.sudoku
+Number of consistency_checks = 76
+File: 9x9.18.sudoku
+Number of consistency_checks = 7147
+File: 9x9.19.sudoku
+Number of consistency_checks = 142
+File: 9x9.2.sudoku
+Number of consistency_checks = 787
+File: 9x9.20.sudoku
+Number of consistency_checks = 75919
+File: 9x9.3.sudoku
+Number of consistency_checks = 137
+File: 9x9.4.sudoku
+Number of consistency_checks = 349
+File: 9x9.5.sudoku
+Number of consistency_checks = 56
+File 9x9.5.sudoku timed out 
+File: 9x9.6.sudoku
+Number of consistency_checks = 623
+File: 9x9.7.sudoku
+Number of consistency_checks = 529
+File: 9x9.8.sudoku
+Number of consistency_checks = 753
+File: 9x9.9.sudoku
+Number of consistency_checks = 887
+18 boards succeeded, average number of consistency checks was: 5490.0
