@@ -4,7 +4,8 @@ import os
 resultsFile = open("results.txt", "w")
 path = 'input_puzzles/more/'
 # path = 'input_puzzles/easy'
-typePuzzle = ['9x9', '16x16', '25x25']
+# typePuzzle = ['9x9', '16x16', '25x25']
+typePuzzle = ['25x25']
 backtrackingArgs =      {'forward_checking': False, 'MRV': False, 'Degree': False, 'LCV': False}
 forwardCheckingArgs =   {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': False}
 MRVArgs =               {'forward_checking': True,  'MRV': True,  'Degree': False, 'LCV': False}
