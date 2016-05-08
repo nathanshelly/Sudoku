@@ -1,13 +1,13 @@
-Running 9x9 puzzles 
+Running 9x9 puzzles
 Running with arguments: {'LCV': False, 'MRV': False, 'Degree': False, 'forward_checking': True}
 File: 9x9.1.sudoku
 Number of consistency_checks = 169
 File: 9x9.10.sudoku
 Number of consistency_checks = 7496
-File 9x9.10.sudoku timed out 
+File 9x9.10.sudoku timed out
 File: 9x9.11.sudoku
 Number of consistency_checks = 1940
-File 9x9.11.sudoku timed out 
+File 9x9.11.sudoku timed out
 File: 9x9.12.sudoku
 Number of consistency_checks = 51702
 File: 9x9.13.sudoku
@@ -18,7 +18,7 @@ File: 9x9.15.sudoku
 Number of consistency_checks = 309
 File: 9x9.16.sudoku
 Number of consistency_checks = 43
-File 9x9.16.sudoku timed out 
+File 9x9.16.sudoku timed out
 File: 9x9.17.sudoku
 Number of consistency_checks = 46
 File: 9x9.18.sudoku
@@ -39,7 +39,7 @@ File: 9x9.6.sudoku
 Number of consistency_checks = 4138
 File: 9x9.7.sudoku
 Number of consistency_checks = 190
-File 9x9.7.sudoku timed out 
+File 9x9.7.sudoku timed out
 File: 9x9.8.sudoku
 Number of consistency_checks = 3176
 File: 9x9.9.sudoku
@@ -134,14 +134,14 @@ File: 9x9.1.sudoku
 Number of consistency_checks = 97
 File: 9x9.10.sudoku
 Number of consistency_checks = 1646
-File 9x9.10.sudoku timed out 
+File 9x9.10.sudoku timed out
 File: 9x9.11.sudoku
 Number of consistency_checks = 6821
 File: 9x9.12.sudoku
 Number of consistency_checks = 2531
 File: 9x9.13.sudoku
 Number of consistency_checks = 107
-File 9x9.13.sudoku timed out 
+File 9x9.13.sudoku timed out
 File: 9x9.14.sudoku
 Number of consistency_checks = 161
 File: 9x9.15.sudoku

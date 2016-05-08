@@ -272,7 +272,6 @@ class SudokuBoard:
     def set_domains_back(self, row, col):
         self.iterate_unassigned_domains(row, col, self.set_domain)
 
-
 def parse_file(filename):
     """Parses a sudoku text file into a BoardSize, and a 2d array which holds
     the value of each cell. Array elements holding a 0 are considered to be
@@ -341,13 +340,12 @@ def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_check
     print_timeout = True
     consistency_checks = 0
 
-    args = {'forward_checking': forward_checking, 'MRV': MRV, 'Degree': Degree, 'LCV': LCV}
-    # print 'Solve arguments ' + str(args)
-
     move_queue = deque()
-    board = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV, move_queue)
 
-    print consistency_checks
+    print 'Before run:', consistency_checks
+    board = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV, move_queue)
+    print 'After run:', consistency_checks
+
     return (board, consistency_checks)
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
@@ -358,7 +356,6 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
     if is_complete(pBoard):
         return pBoard
     if pBoard.empty_domains():
-        # print 'Short circuit'
         return False
 
     if MRV:
@@ -380,7 +377,7 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
     for value in domain:
         if consistency_checks > max_consistency_checks:
             if print_timeout:
-                print "timed out"
+                print "Timed out"
                 print_timeout = False
             return False
         consistency_checks += 1
@@ -389,13 +386,6 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
             if not pBoard.check_consistency(spotToPlay[0], spotToPlay[1], value):
                 continue
 
-        # print 'Value:', value
-        # print 'Spot to play: ', spotToPlay
-        # print 'Open spots: ', pBoard.open_spots
-        # print 'Domains: ', pBoard.boardDomains
-        # pBoard.print_board()
-        # print
-
         move_queue.append((spotToPlay[0], spotToPlay[1]))
         pBoard.set_value(spotToPlay[0], spotToPlay[1], value) # set a value for that spot and update domains
         resultingBoard = backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue)
@@ -403,7 +393,6 @@ def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue):
         if resultingBoard:
             return resultingBoard
         else:
-            # pass tuple
             pBoard.unset_value(*move_queue.pop())
 
     # domain is empty or no values worked

@@ -48,3 +48,6 @@ Temporary Items
 
 # Fucking annoying pyc files
 *.pyc
+
+# fucking annoying results file
+results.txt
