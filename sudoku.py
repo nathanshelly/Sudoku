@@ -7,7 +7,7 @@ import struct, string, math, random, copy
 from collections import deque
 
 # Global check for timing out
-max_consistency_checks = 500000
+max_consistency_checks = 2000000
 
 class SudokuBoard:
     """This will be the sudoku board game object your player will manipulate."""
@@ -347,8 +347,8 @@ def solve(initial_board, LCV = False, MRV = False, Degree = False, forward_check
     consistency_checks = [0]
     board = backtrackingSearch(initial_board, forward_checking, MRV, Degree, LCV, move_queue, consistency_checks)
 
-    # return (board, consistency_checks[0]) # used in generating table
-    return board
+    return (board, consistency_checks[0]) # used in generating table
+    # return board
 
 def backtrackingSearch(pBoard, forward_checking, MRV, Degree, LCV, move_queue, numConsistencyChecks):
     """Executes backtracking algorithm with optional heuristics and constraint propagation methods. Tracks number of consistency checks, and times out when threshold passed."""
