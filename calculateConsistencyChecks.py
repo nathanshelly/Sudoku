@@ -4,14 +4,15 @@ import os
 max_consistency_checks = 2000000
 resultsFile = open("results.txt", "w")
 path = 'input_puzzles/more/'
-typePuzzle = ['9x9', '16x16', '25x25']
+# typePuzzle = ['9x9', '16x16', '25x25']
+typePuzzle = ['25x25']
 backtrackingArgs =      {'forward_checking': False, 'MRV': False, 'Degree': False, 'LCV': False}
 forwardCheckingArgs =   {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': False}
 MRVArgs =               {'forward_checking': True,  'MRV': True,  'Degree': False, 'LCV': False}
 DegreeArgs =            {'forward_checking': True,  'MRV': False, 'Degree': True,  'LCV': False}
 LCVArgs =               {'forward_checking': True,  'MRV': False, 'Degree': False, 'LCV': True}
-# listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
-listArgs = [MRVArgs]
+listArgs = [backtrackingArgs, forwardCheckingArgs, MRVArgs, DegreeArgs, LCVArgs]
+# listArgs = [MRVArgs]
 
 for pathPuzzle in typePuzzle:
     print 'Running ' + str(pathPuzzle) + ' puzzles'
